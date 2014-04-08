@@ -4,12 +4,12 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
 import ar.edu.unq.americana.appearances.Shape;
+import ar.edu.unq.americana.events.game.EventManager;
+import ar.edu.unq.americana.events.game.GameEvent;
 import ar.edu.unq.americana.utils.Vector2D;
 
 public class GameComponent<SceneType extends GameScene> {
@@ -21,7 +21,6 @@ public class GameComponent<SceneType extends GameScene> {
 	private int z;
 	private boolean destroyPending;
 
-	private final List<GameComponent<?>> collides = new ArrayList<GameComponent<?>>();
 	private Vector2D appearanceOffset = new Vector2D(0, 0);
 
 	// ****************************************************************
@@ -201,5 +200,9 @@ public class GameComponent<SceneType extends GameScene> {
 		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().producto(x);
 		final Vector2D yOffset = new Vector2D(0, dy).asVersor().producto(y);
 		this.appearanceOffset = xOffset.suma(yOffset);
+	}
+
+	protected void fireEvent(final GameEvent event) {
+		EventManager.get().fireEvent(event);
 	}
 }

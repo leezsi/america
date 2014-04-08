@@ -12,6 +12,7 @@ import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.components.utils.ComponentUtils;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
+import ar.edu.unq.americana.events.game.EventManager;
 
 public class GameScene {
 
@@ -134,6 +135,7 @@ public class GameScene {
 		Mouse.get().registerComponentEvents(component);
 		KeyBoard.get().registerComponentEvents(component);
 		CollisionManager.get().registerComponentEvents(component);
+		EventManager.get().registerComponentEvents(component);
 	}
 
 	public void addComponents(final GameComponent<?>... components) {
@@ -155,6 +157,7 @@ public class GameScene {
 		Mouse.get().deresgister(component);
 		KeyBoard.get().deresgister(component);
 		CollisionManager.get().deresgister(component);
+		EventManager.get().deresgister(component);
 	}
 
 	public void removeComponents(final GameComponent<?>... components) {

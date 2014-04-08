@@ -7,6 +7,7 @@ import ar.edu.unq.americana.colissions.CollisionManager;
 import ar.edu.unq.americana.components.KeyBoard;
 import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.events.GameEvent;
+import ar.edu.unq.americana.events.game.EventManager;
 import ar.edu.unq.americana.utils.Tuning;
 
 public abstract class Game {
@@ -95,6 +96,7 @@ public abstract class Game {
 		Mouse.get().reset();
 		KeyBoard.get().reset();
 		CollisionManager.get().reset();
+		EventManager.get().reset();
 		this.setCurrentScene(scene);
 	}
 
