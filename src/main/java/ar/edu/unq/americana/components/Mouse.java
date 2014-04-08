@@ -1,15 +1,18 @@
 package ar.edu.unq.americana.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.appearances.Invisible;
-import ar.edu.unq.americana.components.utils.ComponentUtils;
-import ar.edu.unq.americana.constants.MouseButton;
+import ar.edu.unq.americana.events.mouse.MouseEvent;
 
 @SuppressWarnings("rawtypes")
 public class Mouse extends GameComponent {
 
 	private static final Mouse INSTANCE = new Mouse();
+	private List<MouseEvent> events = new ArrayList<MouseEvent>();
 
 	private Mouse() {
 		this.setZ(Integer.MAX_VALUE);
@@ -20,25 +23,26 @@ public class Mouse extends GameComponent {
 		return INSTANCE;
 	}
 
-	@Override
-	public void update(final DeltaState deltaState) {
-		for (final MouseButton button : MouseButton.values()) {
-			if (!button.equals(MouseButton.ANY)) {
+	public void registerComponentEvents(final GameComponent component) {
+		events.addAll(MouseEvent.getAll(component));
+	}
 
-				if (deltaState.isMouseButtonPressed(button)) {
-					ComponentUtils.fireButtonPressed(this.getScene()
-							.getComponents(), button, deltaState);
-				}
-				if (deltaState.isMouseButtonBeingHold(button)) {
-					ComponentUtils.fireButtonBeingHold(this.getScene()
-							.getComponents(), button, deltaState);
-				}
-				if (deltaState.isMouseButtonReleased(button)) {
-					ComponentUtils.fireButtonReleased(this.getScene()
-							.getComponents(), button, deltaState);
-				}
+	public void privateUpdate(final DeltaState state) {
+		for (final MouseEvent event : events) {
+			event.apply(state);
+		}
+	}
+
+	public void deresgister(final GameComponent<?> component) {
+		for (final MouseEvent event : events) {
+			if (event.getComponent() == component) {
+				events.remove(component);
 			}
 		}
-		super.update(deltaState);
+
+	}
+
+	public void reset() {
+		events = new ArrayList<MouseEvent>();
 	}
 }

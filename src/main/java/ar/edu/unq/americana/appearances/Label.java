@@ -8,9 +8,9 @@ import java.awt.Graphics2D;
 import java.util.Arrays;
 import java.util.List;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class Label implements Appearance {
+public class Label extends Shape {
 
 	private Font font;
 	private Color color;
@@ -116,7 +116,7 @@ public class Label implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
 		graphics.setFont(this.getFont());
 		graphics.setColor(this.getColor());
@@ -124,10 +124,9 @@ public class Label implements Appearance {
 		this.getTextLines().get(0);
 
 		for (int index = 0; index < this.getTextLines().size(); index++) {
-			graphics.drawString(
-					this.getTextLines().get(index), //
-					(int) appearanceData.getX(), //
-					(int) (appearanceData.getY() + (this.getLineHeight() * (index + 1))) //
+			graphics.drawString(this.getTextLines().get(index), //
+					(int) this.getX(), //
+					(int) (this.getY() + (this.getLineHeight() * (index + 1))) //
 			);
 		}
 	}

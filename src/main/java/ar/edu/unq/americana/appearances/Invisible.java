@@ -2,9 +2,9 @@ package ar.edu.unq.americana.appearances;
 
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class Invisible implements Appearance {
+public class Invisible extends Shape {
 
 	// ****************************************************************
 	// ** QUERIES
@@ -35,8 +35,10 @@ public class Invisible implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import ar.edu.unq.americana.colissions.CollisionManager;
+import ar.edu.unq.americana.components.KeyBoard;
+import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.components.utils.ComponentUtils;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
@@ -104,9 +107,13 @@ public class GameScene {
 		this.setLastUpdateTime(now);
 
 		final DeltaState state = this.getEventQueue().takeState(delta);
+		final ArrayList<GameComponent<?>> allComponents = new ArrayList<GameComponent<?>>(
+				this.getComponents());
 
-		for (final GameComponent<?> component : new ArrayList<GameComponent<?>>(
-				this.getComponents())) {
+		Mouse.get().privateUpdate(state);
+		KeyBoard.get().privateUpdate(state);
+		CollisionManager.get().privateUpdate(allComponents);
+		for (final GameComponent<?> component : allComponents) {
 			if (component.isDestroyPending()) {
 				this.removeComponent(component);
 			} else {
@@ -123,8 +130,10 @@ public class GameScene {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addComponent(final GameComponent component) {
 		this.getComponents().add(this.indexToInsert(component), component);
-
 		component.setScene(this);
+		Mouse.get().registerComponentEvents(component);
+		KeyBoard.get().registerComponentEvents(component);
+		CollisionManager.get().registerComponentEvents(component);
 	}
 
 	public void addComponents(final GameComponent<?>... components) {
@@ -142,8 +151,10 @@ public class GameScene {
 
 	public void removeComponent(final GameComponent<?> component) {
 		this.getComponents().remove(component);
-
 		component.setScene(null);
+		Mouse.get().deresgister(component);
+		KeyBoard.get().deresgister(component);
+		CollisionManager.get().deresgister(component);
 	}
 
 	public void removeComponents(final GameComponent<?>... components) {

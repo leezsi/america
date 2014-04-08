@@ -4,45 +4,15 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
+import ar.edu.unq.americana.appearances.Shape;
 import ar.edu.unq.americana.utils.Vector2D;
 
 public class GameComponent<SceneType extends GameScene> {
-
-	public static class AppearanceData {
-
-		private final GameComponent<?> component;
-		private Vector2D offset;
-
-		public AppearanceData(final GameComponent<?> component) {
-			this.component = component;
-			this.offset = new Vector2D(0, 0);
-		}
-
-		public double getX() {
-			return new Vector2D(component.getX(), component.getY())
-					.suma(offset).getX();
-		}
-
-		public double getY() {
-			return new Vector2D(component.getX(), component.getY())
-					.suma(offset).getY();
-		}
-
-		public void setOffset(final Vector2D offset) {
-			this.offset = offset;
-		}
-
-		public void setOffset(final double xd, final double x, final double yd,
-				final double y) {
-			final Vector2D xOffset = new Vector2D(xd, 0).asVersor().producto(x);
-			final Vector2D yOffset = new Vector2D(0, yd).asVersor().producto(y);
-			this.setOffset(xOffset.suma(yOffset));
-		}
-
-	}
 
 	private SceneType scene;
 	private Appearance appearance;
@@ -50,7 +20,9 @@ public class GameComponent<SceneType extends GameScene> {
 	private double y;
 	private int z;
 	private boolean destroyPending;
-	private AppearanceData appearanceData;
+
+	private final List<GameComponent<?>> collides = new ArrayList<GameComponent<?>>();
+	private Vector2D appearanceOffset = new Vector2D(0, 0);
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -66,8 +38,7 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public GameComponent(final Appearance appearance, final double x,
 			final double y) {
-		this.setAppearanceData(new AppearanceData(this));
-		this.setAppearance(appearance);
+		this.setAppearance((Shape) appearance);
 		this.setX(x);
 		this.setY(y);
 	}
@@ -92,7 +63,6 @@ public class GameComponent<SceneType extends GameScene> {
 	// ****************************************************************
 
 	public void setAppearenceOffset(final Vector2D vector) {
-		this.appearanceData.setOffset(vector);
 	}
 
 	public void move(final double dx, final double dy) {
@@ -162,7 +132,7 @@ public class GameComponent<SceneType extends GameScene> {
 	// ****************************************************************
 
 	public void render(final Graphics2D graphics) {
-		this.getAppearance().render(this.appearanceData, graphics);
+		this.getAppearance().render(this, graphics);
 	}
 
 	public void update(final DeltaState deltaState) {
@@ -185,9 +155,9 @@ public class GameComponent<SceneType extends GameScene> {
 		return this.appearance;
 	}
 
-	public void setAppearance(final Appearance appearance) {
+	public void setAppearance(final Shape appearance) {
 		this.appearance = appearance;
-
+		appearance.setComponent(this);
 	}
 
 	public double getX() {
@@ -222,12 +192,14 @@ public class GameComponent<SceneType extends GameScene> {
 		this.destroyPending = destroyPending;
 	}
 
-	protected void setAppearanceData(final AppearanceData appearanceData) {
-		this.appearanceData = appearanceData;
+	public Vector2D getAppearanceOffset() {
+		return appearanceOffset;
 	}
 
-	public AppearanceData getAppearanceData() {
-		return this.appearanceData;
+	protected void setAppearenceOffset(final int dx, final int x, final int dy,
+			final int y) {
+		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().producto(x);
+		final Vector2D yOffset = new Vector2D(0, dy).asVersor().producto(y);
+		this.appearanceOffset = xOffset.suma(yOffset);
 	}
-
 }

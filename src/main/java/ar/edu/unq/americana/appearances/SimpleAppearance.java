@@ -2,10 +2,10 @@ package ar.edu.unq.americana.appearances;
 
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public abstract class SimpleAppearance<T extends Appearance> implements
-		Appearance, Cloneable {
+public abstract class SimpleAppearance<T extends Appearance> extends Shape
+		implements Cloneable {
 
 	private double x;
 	private double y;
@@ -67,10 +67,9 @@ public abstract class SimpleAppearance<T extends Appearance> implements
 	// ****************************************************************
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
-		this.renderAt((int) appearanceData.getX(), (int) appearanceData.getY(),
-				graphics);
+		this.renderAt((int) this.getX(), (int) this.getY(), graphics);
 	}
 
 	public void renderAt(final int x, final int y, final Graphics2D graphics) {
@@ -83,6 +82,7 @@ public abstract class SimpleAppearance<T extends Appearance> implements
 	// ** ACCESSORS
 	// ****************************************************************
 
+	@Override
 	public double getX() {
 		return this.x;
 	}
@@ -91,6 +91,7 @@ public abstract class SimpleAppearance<T extends Appearance> implements
 		this.x = x;
 	}
 
+	@Override
 	public double getY() {
 		return this.y;
 	}

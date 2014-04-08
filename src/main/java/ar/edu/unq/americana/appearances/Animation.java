@@ -2,9 +2,9 @@ package ar.edu.unq.americana.appearances;
 
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class Animation implements Appearance {
+public class Animation extends Shape {
 	private double meantime;
 	private Sprite[] sprites;
 	private int currentIndex;
@@ -57,12 +57,6 @@ public class Animation implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
-			final Graphics2D graphics) {
-		this.getCurrentSprite().render(appearanceData, graphics);
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
 	public Animation copy() {
 		return new Animation(this.getMeantime(), this.getSprites());
@@ -112,6 +106,12 @@ public class Animation implements Appearance {
 
 	protected void setRemainingTime(final double remainingTime) {
 		this.remainingTime = remainingTime;
+	}
+
+	@Override
+	public void render(final GameComponent<?> component,
+			final Graphics2D graphics) {
+		this.getCurrentSprite().render(component, graphics);
 	}
 
 }

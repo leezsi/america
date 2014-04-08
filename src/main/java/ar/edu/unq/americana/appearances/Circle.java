@@ -3,9 +3,9 @@ package ar.edu.unq.americana.appearances;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class Circle implements Appearance {
+public class Circle extends Shape {
 
 	private final Color color;
 	private final int diameter;
@@ -48,12 +48,11 @@ public class Circle implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
 		graphics.setColor(color);
-		graphics.fillOval((int) appearanceData.getX(),
-				(int) appearanceData.getY(), diameter, diameter);
-
+		graphics.fillOval((int) this.getX(), (int) this.getY(), diameter,
+				diameter);
 	}
 
 }

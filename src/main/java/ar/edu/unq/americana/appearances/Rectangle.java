@@ -3,9 +3,9 @@ package ar.edu.unq.americana.appearances;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class Rectangle implements Appearance {
+public class Rectangle extends Shape {
 
 	private final Color color;
 	private final int width, height;
@@ -49,11 +49,10 @@ public class Rectangle implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
 		graphics.setColor(color);
-		graphics.fillRect((int) appearanceData.getX(),
-				(int) appearanceData.getY(), width, height);
+		graphics.fillRect((int) this.getX(), (int) this.getY(), width, height);
 	}
 
 }

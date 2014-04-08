@@ -2,7 +2,7 @@ package ar.edu.unq.americana.appearances;
 
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
 public interface Appearance {
 
@@ -22,6 +22,9 @@ public interface Appearance {
 
 	public void update(double delta);
 
-	public void render(AppearanceData appearanceData, Graphics2D graphics);
+	public void render(GameComponent<?> component, Graphics2D graphics);
 
+	public double getX();
+
+	public double getY();
 }

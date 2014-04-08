@@ -3,6 +3,9 @@ package ar.edu.unq.americana;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
+import ar.edu.unq.americana.colissions.CollisionManager;
+import ar.edu.unq.americana.components.KeyBoard;
+import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.utils.Tuning;
 
@@ -83,12 +86,16 @@ public abstract class Game {
 		if (this.getCurrentScene() != null) {
 			this.getCurrentScene().setGame(null);
 		}
-
 		currentScene = scene;
-
 		scene.setGame(this);
-
 		scene.onSetAsCurrent();
+	}
+
+	public void changeScene(final GameScene scene) {
+		Mouse.get().reset();
+		KeyBoard.get().reset();
+		CollisionManager.get().reset();
+		this.setCurrentScene(scene);
 	}
 
 }

@@ -3,9 +3,9 @@ package ar.edu.unq.americana.appearances;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.GameComponent.AppearanceData;
+import ar.edu.unq.americana.GameComponent;
 
-public class FilledArc implements Appearance {
+public class FilledArc extends Shape {
 
 	private final Color color;
 	private final int radius;
@@ -53,13 +53,12 @@ public class FilledArc implements Appearance {
 	}
 
 	@Override
-	public void render(final AppearanceData appearanceData,
+	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
-		final int x = (int) (appearanceData.getX());
-		final int y = (int) (appearanceData.getY());
 
 		graphics.setColor(color);
-		graphics.fillArc(x, y, (int) this.getWidth(), (int) this.getHeight(),
+		graphics.fillArc((int) this.getX(), (int) getY(),
+				(int) this.getWidth(), (int) this.getHeight(),
 				(int) startAngle, (int) arcAngle);
 	}
 }
