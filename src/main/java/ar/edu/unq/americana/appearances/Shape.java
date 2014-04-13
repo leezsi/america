@@ -6,7 +6,7 @@ import ar.edu.unq.americana.utils.Vector2D;
 public abstract class Shape implements Appearance {
 
 	private GameComponent<?> component;
-	private Vector2D offset;
+	public Vector2D offset;
 
 	public void setComponent(final GameComponent<?> component) {
 		this.component = component;
@@ -29,6 +29,10 @@ public abstract class Shape implements Appearance {
 	@Override
 	public double getY() {
 		return componentVector().suma(offset).getY();
+	}
+
+	protected GameComponent<?> getComponent() {
+		return component;
 	}
 
 }
