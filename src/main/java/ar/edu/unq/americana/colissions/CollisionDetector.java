@@ -120,4 +120,28 @@ public class CollisionDetector {
 		return 0.5 * Math.abs((a * d) - (b * c));
 	}
 
+	public static boolean collidesCircleAgainstLine(final double cx,
+			final double cy, final double radious, final double x1,
+			final double y1, final double x2, final double y2) {
+		final double n = Math.abs(((x2 - x1) * (y1 - cy))
+				- ((x1 - cx) * (y2 - y1)));
+		final double d = Math.sqrt(((x2 - x1) * (x2 - x1))
+				+ ((y2 - y1) * (y2 - y1)));
+		final double dist = n / d;
+		if (dist > radious) {
+			return false;
+		}
+		final double d1 = Math.sqrt(((cx - x1) * (cx - x1))
+				+ ((cy - y1) * (cy - y1)));
+		if ((d1 - radious) > d) {
+			return false;
+		}
+		final double d2 = Math.sqrt(((cx - x2) * (cx - x2))
+				+ ((cy - y2) * (cy - y2)));
+		if ((d2 - radious) > d) {
+			return false;
+		}
+		return true;
+	}
+
 }

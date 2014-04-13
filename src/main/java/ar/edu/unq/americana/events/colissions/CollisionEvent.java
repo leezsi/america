@@ -1,4 +1,4 @@
-package ar.edu.unq.americana.colissions.events;
+package ar.edu.unq.americana.events.colissions;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -9,25 +9,33 @@ import ar.edu.unq.americana.GameComponent;
 public abstract class CollisionEvent {
 	protected GameComponent<?> component;
 	protected Method method;
-	protected Class<? extends GameComponent<?>> target;
 
 	public static List<? extends CollisionEvent> getEvents(
 			final GameComponent<?> component) {
 		final List<CollisionEvent> result = new ArrayList<CollisionEvent>();
-		result.addAll(CollisionAgaintsCheckerEvent.getEvents(component));
+		result.addAll(ByRuleEvent.getEvents(component));
 		return result;
 	}
 
 	protected CollisionEvent(final GameComponent<?> component,
-			final Method method, final Class<? extends GameComponent<?>> target) {
+			final Method method) {
 		this.component = component;
 		this.method = method;
-		this.target = target;
 	}
+
+	public void apply(final GameComponent<?> component,
+			final List<GameComponent<?>> all) {
+		this.doApply(component, this.filter(component, all));
+	}
+
+	protected abstract void doApply(GameComponent<?> component,
+			List<GameComponent<?>> others);
 
 	public GameComponent<?> getComponent() {
 		return component;
 	}
 
-	public abstract void apply(List<GameComponent<?>> allComponents);
+	public abstract List<GameComponent<?>> filter(GameComponent<?> self,
+			List<GameComponent<?>> all);
+
 }

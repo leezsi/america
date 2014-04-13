@@ -2,25 +2,27 @@ package ar.edu.unq.americana.events.mouse;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.components.utils.ComponentUtils;
 import ar.edu.unq.americana.constants.MouseButton;
-import ar.edu.unq.americana.events.annotations.MouseEvents;
+import ar.edu.unq.americana.events.annotations.Events.Mouse.BeingHold;
 
 public class MouseHoldEvent extends MouseEvent {
 
 	@SuppressWarnings("rawtypes")
-	static public List<MouseEvent> getEvents(final GameComponent<?> component) {
+	static public Collection<? extends MouseEvent> getEvents(
+			final GameComponent<?> component) {
 		final Class<? extends GameComponent> clazz = component.getClass();
 		final List<MouseEvent> result = new ArrayList<MouseEvent>();
 		final Method[] mehtods = ComponentUtils.filterMethodsByAnnotation(
-				clazz, MouseEvents.BeingHold.class);
+				clazz, BeingHold.class);
 		for (final Method method : mehtods) {
-			final MouseButton button = method.getAnnotation(
-					MouseEvents.BeingHold.class).value();
+			final MouseButton button = method.getAnnotation(BeingHold.class)
+					.value();
 			result.add(new MouseHoldEvent(component, method, button));
 		}
 		return result;
@@ -33,14 +35,8 @@ public class MouseHoldEvent extends MouseEvent {
 	}
 
 	@Override
-	public void apply(final DeltaState state) {
-		if (state.isMouseButtonBeingHold(button)) {
-			if (button.equals(MouseButton.ANY)) {
-				ComponentUtils.invoke(component, method, state, button);
-			} else {
-				ComponentUtils.invoke(component, method, state);
-			}
-		}
+	protected boolean validate(final DeltaState state) {
+		return state.isMouseButtonBeingHold(expected);
 	}
 
 }

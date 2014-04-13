@@ -6,6 +6,7 @@ import java.util.List;
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.appearances.Invisible;
+import ar.edu.unq.americana.events.game.EventManager;
 import ar.edu.unq.americana.events.mouse.MouseEvent;
 
 @SuppressWarnings("rawtypes")
@@ -24,7 +25,7 @@ public class Mouse extends GameComponent {
 	}
 
 	public void registerComponentEvents(final GameComponent component) {
-		events.addAll(MouseEvent.getAll(component));
+		events.addAll(EventManager.getAllMouseEvents(component));
 	}
 
 	public void privateUpdate(final DeltaState state) {
@@ -45,4 +46,5 @@ public class Mouse extends GameComponent {
 	public void reset() {
 		events = new ArrayList<MouseEvent>();
 	}
+
 }

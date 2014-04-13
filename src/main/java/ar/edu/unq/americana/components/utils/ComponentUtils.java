@@ -12,6 +12,38 @@ import ar.edu.unq.americana.exceptions.GameException;
 
 public class ComponentUtils {
 
+	public static class ListFilter {
+
+		private final List<GameComponent<?>> list;
+
+		public ListFilter(final List<GameComponent<?>> components) {
+			list = components;
+		}
+
+		public ListFilter byClass(final Class<?> clazz) {
+			final List<GameComponent<?>> result = new ArrayList<GameComponent<?>>();
+			for (final GameComponent<?> component : list) {
+				if (component.getClass() == clazz) {
+					result.add(component);
+				}
+			}
+			return new ListFilter(result);
+		}
+
+		public List<GameComponent<?>> get() {
+			return list;
+
+		}
+
+		public ListFilter remove(final GameComponent<?> component) {
+			final List<GameComponent<?>> copy = new ArrayList<GameComponent<?>>(
+					list);
+			copy.remove(component);
+			return new ListFilter(copy);
+		}
+
+	}
+
 	public static GameComponent<?>[] commonComponents() {
 		return new GameComponent<?>[] { Mouse.get(), KeyBoard.get() };
 	}
@@ -58,11 +90,15 @@ public class ComponentUtils {
 
 	public static Method getMethod(final GameComponent<?> component,
 			final String methodName,
-			final Class<? extends GameComponent>... args) {
+			final Class<? extends GameComponent<?>>... args) {
 		try {
 			return component.getClass().getMethod(methodName, args);
 		} catch (final Exception e) {
 			throw new GameException(e);
 		}
+	}
+
+	public static ListFilter filter(final List<GameComponent<?>> components) {
+		return new ComponentUtils.ListFilter(components);
 	}
 }

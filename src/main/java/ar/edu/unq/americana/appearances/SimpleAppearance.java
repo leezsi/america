@@ -7,9 +7,6 @@ import ar.edu.unq.americana.GameComponent;
 public abstract class SimpleAppearance<T extends Appearance> extends Shape
 		implements Cloneable {
 
-	private double x;
-	private double y;
-
 	// ****************************************************************
 	// ** QUERIES
 	// ****************************************************************
@@ -69,7 +66,8 @@ public abstract class SimpleAppearance<T extends Appearance> extends Shape
 	@Override
 	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
-		this.renderAt((int) this.getX(), (int) this.getY(), graphics);
+		// this.renderAt((int) this.getX(), (int) this.getY(), graphics);
+		this.doRenderAt((int) this.getX(), (int) this.getY(), graphics);
 	}
 
 	public void renderAt(final int x, final int y, final Graphics2D graphics) {
@@ -82,21 +80,4 @@ public abstract class SimpleAppearance<T extends Appearance> extends Shape
 	// ** ACCESSORS
 	// ****************************************************************
 
-	@Override
-	public double getX() {
-		return this.x;
-	}
-
-	public void setX(final double x) {
-		this.x = x;
-	}
-
-	@Override
-	public double getY() {
-		return this.y;
-	}
-
-	public void setY(final double y) {
-		this.y = y;
-	}
 }

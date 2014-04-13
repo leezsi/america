@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import ar.edu.unq.americana.colissions.CollisionManager;
 import ar.edu.unq.americana.components.KeyBoard;
 import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.components.utils.ComponentUtils;
@@ -113,7 +112,6 @@ public class GameScene {
 
 		Mouse.get().privateUpdate(state);
 		KeyBoard.get().privateUpdate(state);
-		CollisionManager.get().privateUpdate(allComponents);
 		for (final GameComponent<?> component : allComponents) {
 			if (component.isDestroyPending()) {
 				this.removeComponent(component);
@@ -134,7 +132,6 @@ public class GameScene {
 		component.setScene(this);
 		Mouse.get().registerComponentEvents(component);
 		KeyBoard.get().registerComponentEvents(component);
-		CollisionManager.get().registerComponentEvents(component);
 		EventManager.get().registerComponentEvents(component);
 	}
 
@@ -156,7 +153,6 @@ public class GameScene {
 		component.setScene(null);
 		Mouse.get().deresgister(component);
 		KeyBoard.get().deresgister(component);
-		CollisionManager.get().deresgister(component);
 		EventManager.get().deresgister(component);
 	}
 

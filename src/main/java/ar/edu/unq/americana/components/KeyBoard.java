@@ -6,14 +6,15 @@ import java.util.List;
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.appearances.Invisible;
-import ar.edu.unq.americana.events.keyboard.KeybordEvent;
+import ar.edu.unq.americana.events.game.EventManager;
+import ar.edu.unq.americana.events.keyboard.KeyboardEvent;
 
 @SuppressWarnings("rawtypes")
 public class KeyBoard extends GameComponent {
 
 	private static final KeyBoard INSTANCE = new KeyBoard();
 
-	private List<KeybordEvent> events = new ArrayList<KeybordEvent>();
+	private List<KeyboardEvent> events = new ArrayList<KeyboardEvent>();
 
 	private KeyBoard() {
 		this.setAppearance(new Invisible());
@@ -24,11 +25,11 @@ public class KeyBoard extends GameComponent {
 	}
 
 	public void registerComponentEvents(final GameComponent component) {
-		events.addAll(KeybordEvent.getAll(component));
+		events.addAll(EventManager.getAllKeyboardEvents(component));
 	}
 
 	public void deresgister(final GameComponent<?> component) {
-		for (final KeybordEvent event : events) {
+		for (final KeyboardEvent event : events) {
 			if (event.getComponent() == component) {
 				events.remove(component);
 			}
@@ -36,12 +37,12 @@ public class KeyBoard extends GameComponent {
 	}
 
 	public void privateUpdate(final DeltaState state) {
-		for (final KeybordEvent event : events) {
+		for (final KeyboardEvent event : events) {
 			event.apply(state);
 		}
 	}
 
 	public void reset() {
-		events = new ArrayList<KeybordEvent>();
+		events = new ArrayList<KeyboardEvent>();
 	}
 }

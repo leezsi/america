@@ -8,10 +8,9 @@ import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.components.utils.ComponentUtils;
 import ar.edu.unq.americana.constants.Key;
-import ar.edu.unq.americana.constants.MouseButton;
-import ar.edu.unq.americana.events.annotations.KeyboarEvents;
+import ar.edu.unq.americana.events.annotations.Events.Keyboard.Release;
 
-public class KeyReleaseEvent extends KeybordEvent {
+public class KeyReleaseEvent extends KeyboardEvent {
 
 	public KeyReleaseEvent(final GameComponent<?> component,
 			final Method method, final Key key) {
@@ -19,29 +18,22 @@ public class KeyReleaseEvent extends KeybordEvent {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static List<? extends KeybordEvent> getEvents(
+	public static List<? extends KeyboardEvent> getEvents(
 			final GameComponent<?> component) {
 		final Class<? extends GameComponent> clazz = component.getClass();
-		final List<KeybordEvent> result = new ArrayList<KeybordEvent>();
+		final List<KeyboardEvent> result = new ArrayList<KeyboardEvent>();
 		final Method[] mehtods = ComponentUtils.filterMethodsByAnnotation(
-				clazz, KeyboarEvents.Release.class);
+				clazz, Release.class);
 		for (final Method method : mehtods) {
-			final Key key = method.getAnnotation(KeyboarEvents.Release.class)
-					.value();
+			final Key key = method.getAnnotation(Release.class).value();
 			result.add(new KeyReleaseEvent(component, method, key));
 		}
 		return result;
 	}
 
 	@Override
-	public void apply(final DeltaState state) {
-		if (state.isKeyReleased(key)) {
-			if (key.equals(MouseButton.ANY)) {
-				ComponentUtils.invoke(component, method, state, key);
-			} else {
-				ComponentUtils.invoke(component, method, state);
-			}
-		}
+	protected boolean validate(final DeltaState state) {
+		return state.isKeyReleased(expected);
 	}
 
 }

@@ -4,15 +4,19 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import java.awt.Graphics2D;
+import java.util.List;
 
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
 import ar.edu.unq.americana.appearances.Shape;
+import ar.edu.unq.americana.events.colissions.CollisionEvent;
 import ar.edu.unq.americana.events.game.EventManager;
 import ar.edu.unq.americana.events.game.GameEvent;
+import ar.edu.unq.americana.events.game.UpdateEvent;
+import ar.edu.unq.americana.rules.IRule;
 import ar.edu.unq.americana.utils.Vector2D;
 
-public class GameComponent<SceneType extends GameScene> {
+public abstract class GameComponent<SceneType extends GameScene> {
 
 	private SceneType scene;
 	private Appearance appearance;
@@ -20,8 +24,11 @@ public class GameComponent<SceneType extends GameScene> {
 	private double y;
 	private int z;
 	private boolean destroyPending;
-
-	private Vector2D appearanceOffset = new Vector2D(0, 0);
+	private List<? extends UpdateEvent> updateEvents;
+	private IRule<?, ?>[] rules;
+	private Vector2D direction = new Vector2D(0, 0);
+	private double speed;
+	private List<? extends CollisionEvent> collisionEvents;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -40,6 +47,17 @@ public class GameComponent<SceneType extends GameScene> {
 		this.setAppearance((Shape) appearance);
 		this.setX(x);
 		this.setY(y);
+		collisionEvents = CollisionEvent.getEvents(this);
+		this.updateEvents = UpdateEvent.getEvents(this);
+		this.rules = this.rules();
+	}
+
+	protected double getSpeed() {
+		return speed;
+	}
+
+	protected IRule<?, ?>[] rules() {
+		return new IRule<?, ?>[0];
 	}
 
 	// ****************************************************************
@@ -67,6 +85,11 @@ public class GameComponent<SceneType extends GameScene> {
 	public void move(final double dx, final double dy) {
 		this.setX(this.getX() + dx);
 		this.setY(this.getY() + dy);
+	}
+
+	public void move(final Vector2D where) {
+		this.setX(where.getX());
+		this.setY(where.getY());
 	}
 
 	public void destroy() {
@@ -104,25 +127,27 @@ public class GameComponent<SceneType extends GameScene> {
 	public void alignCloserBoundTo(final GameComponent<?> target) {
 		final Appearance ownBounds = this.getAppearance();
 		final Appearance targetBounds = target.getAppearance();
-		final double bottomDistance = abs((ownBounds.getHeight() + this.getY())
-				- target.getY());
-		final double targetRight = target.getX() + targetBounds.getWidth();
-		final double leftDistance = abs(this.getX() - targetRight);
-		final double targetBottom = target.getY() + targetBounds.getHeight();
-		final double topDistance = abs(this.getY() - targetBottom);
-		final double rightDistance = abs((this.getX() + ownBounds.getWidth())
-				- target.getX());
+		final double bottomDistance = abs((ownBounds.getHeight() + ownBounds
+				.getY()) - targetBounds.getY());
+		final double targetRight = targetBounds.getX()
+				+ targetBounds.getWidth();
+		final double leftDistance = abs(ownBounds.getX() - targetRight);
+		final double targetBottom = targetBounds.getY()
+				+ targetBounds.getHeight();
+		final double topDistance = abs(ownBounds.getY() - targetBottom);
+		final double rightDistance = abs((ownBounds.getX() + ownBounds
+				.getWidth()) - targetBounds.getX());
 		final double minDistance = min(bottomDistance,
 				min(leftDistance, min(topDistance, rightDistance)));
 
 		if (minDistance == bottomDistance) {
-			this.alignBottomTo(target.getY());
+			this.alignBottomTo(targetBounds.getY());
 		} else if (minDistance == leftDistance) {
 			this.alignLeftTo(targetRight);
 		} else if (minDistance == topDistance) {
 			this.alignTopTo(targetBottom);
 		} else {
-			this.alignRightTo(target.getX());
+			this.alignRightTo(targetBounds.getX());
 		}
 	}
 
@@ -134,7 +159,30 @@ public class GameComponent<SceneType extends GameScene> {
 		this.getAppearance().render(this, graphics);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void update(final DeltaState deltaState) {
+		for (final CollisionEvent event : this.collisionEvents) {
+			final List<GameComponent<?>> all = scene.getComponents();
+			event.apply(this, all);
+			break;
+		}
+
+		final Vector2D nextPosition = this.direction.producto(
+				deltaState.getDelta() * this.getSpeed()).suma(
+				new Vector2D(this.getX(), this.getY()));
+
+		for (final IRule<?, ?> rule : this.rules) {
+			if (((IRule<GameComponent<?>, SceneType>) rule).mustApply(this,
+					nextPosition, this.getScene())) {
+				((IRule<GameComponent<SceneType>, SceneType>) rule).apply(this,
+						nextPosition, this.getScene());
+				break;
+			}
+		}
+
+		for (final UpdateEvent event : this.updateEvents) {
+			event.execute(deltaState);
+		}
 		this.getAppearance().update(deltaState.getDelta());
 	}
 
@@ -191,18 +239,19 @@ public class GameComponent<SceneType extends GameScene> {
 		this.destroyPending = destroyPending;
 	}
 
-	public Vector2D getAppearanceOffset() {
-		return appearanceOffset;
-	}
-
-	protected void setAppearenceOffset(final int dx, final int x, final int dy,
-			final int y) {
-		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().producto(x);
-		final Vector2D yOffset = new Vector2D(0, dy).asVersor().producto(y);
-		this.appearanceOffset = xOffset.suma(yOffset);
-	}
-
 	protected void fireEvent(final GameEvent event) {
 		EventManager.get().fireEvent(event);
+	}
+
+	public Vector2D getDirection() {
+		return direction;
+	}
+
+	public void setDirection(final double x, final double y) {
+		this.direction = new Vector2D(x, y).asVersor();
+	}
+
+	public void changeRules(final IRule<?, ?>[] rules) {
+		this.rules = rules;
 	}
 }
