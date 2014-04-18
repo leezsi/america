@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ar.edu.unq.americana.colissions.ICollisionRule;
 import ar.edu.unq.americana.constants.Key;
 import ar.edu.unq.americana.constants.MouseButton;
 import ar.edu.unq.americana.events.game.GameEvent;
@@ -13,18 +12,6 @@ import ar.edu.unq.americana.events.game.GameEvent;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = { ElementType.METHOD })
 public @interface Events {
-
-	// Collision
-
-	public @interface Collision {
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = { ElementType.METHOD })
-		public @interface ByRule {
-			Class<? extends ICollisionRule<?, ?>> value();
-		}
-
-	}
 
 	// keyboard
 	@Retention(RetentionPolicy.RUNTIME)

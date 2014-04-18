@@ -28,6 +28,9 @@ public class GameScene {
 		this.setComponents(new ArrayList<GameComponent<?>>());
 		this.setEventQueue(new EventQueue());
 		this.addComponents(Arrays.asList(ComponentUtils.commonComponents()));
+		Mouse.get().reset();
+		KeyBoard.get().reset();
+		EventManager.get().reset();
 	}
 
 	public GameScene(final GameComponent<? extends GameScene>... components) {
@@ -113,6 +116,9 @@ public class GameScene {
 		Mouse.get().privateUpdate(state);
 		KeyBoard.get().privateUpdate(state);
 		for (final GameComponent<?> component : allComponents) {
+			if (this.getGame() == null) {
+				break;
+			}
 			if (component.isDestroyPending()) {
 				this.removeComponent(component);
 			} else {
@@ -120,6 +126,7 @@ public class GameScene {
 				component.render(graphics);
 			}
 		}
+		Mouse.get().render(graphics);
 	}
 
 	// ****************************************************************

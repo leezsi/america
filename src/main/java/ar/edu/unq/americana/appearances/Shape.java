@@ -10,15 +10,18 @@ public abstract class Shape implements Appearance {
 
 	public void setComponent(final GameComponent<?> component) {
 		this.component = component;
-		final Vector2D xOffset = new Vector2D(-1, 0).asVersor().producto(
-				this.getWidth() / 2);
-		final Vector2D yOffset = new Vector2D(0, -1).asVersor().producto(
-				this.getHeight() / 2);
-		offset = xOffset.suma(yOffset);
+		this.changeOffset(-1, this.getWidth() / 2, -1, this.getHeight() / 2);
 	}
 
 	private Vector2D componentVector() {
 		return new Vector2D(component.getX(), component.getY());
+	}
+
+	public void changeOffset(final double dx, final double x, final double dy,
+			final double y) {
+		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().producto(x);
+		final Vector2D yOffset = new Vector2D(0, dy).asVersor().producto(y);
+		offset = xOffset.suma(yOffset);
 	}
 
 	@Override

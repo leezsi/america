@@ -1,5 +1,6 @@
 package ar.edu.unq.americana.components;
 
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,15 @@ public class Mouse extends GameComponent {
 
 	public void reset() {
 		events = new ArrayList<MouseEvent>();
+	}
+
+	@Override
+	public void update(final DeltaState deltaState) {
+		final Double currentMousePosition = deltaState
+				.getCurrentMousePosition();
+		this.setX(currentMousePosition.getX());
+		this.setY(currentMousePosition.getY());
+		super.update(deltaState);
 	}
 
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
 import ar.edu.unq.americana.appearances.Shape;
-import ar.edu.unq.americana.events.colissions.CollisionEvent;
 import ar.edu.unq.americana.events.game.EventManager;
 import ar.edu.unq.americana.events.game.GameEvent;
 import ar.edu.unq.americana.events.game.UpdateEvent;
@@ -28,7 +27,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 	private IRule<?, ?>[] rules;
 	private Vector2D direction = new Vector2D(0, 0);
 	private double speed;
-	private List<? extends CollisionEvent> collisionEvents;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -47,7 +45,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 		this.setAppearance((Shape) appearance);
 		this.setX(x);
 		this.setY(y);
-		collisionEvents = CollisionEvent.getEvents(this);
 		this.updateEvents = UpdateEvent.getEvents(this);
 		this.rules = this.rules();
 	}
@@ -161,11 +158,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	@SuppressWarnings("unchecked")
 	public void update(final DeltaState deltaState) {
-		for (final CollisionEvent event : this.collisionEvents) {
-			final List<GameComponent<?>> all = scene.getComponents();
-			event.apply(this, all);
-			break;
-		}
 
 		final Vector2D nextPosition = this.direction.producto(
 				deltaState.getDelta() * this.getSpeed()).suma(

@@ -3,10 +3,7 @@ package ar.edu.unq.americana;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-import ar.edu.unq.americana.components.KeyBoard;
-import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.events.GameEvent;
-import ar.edu.unq.americana.events.game.EventManager;
 import ar.edu.unq.americana.utils.Tuning;
 
 public abstract class Game {
@@ -89,13 +86,6 @@ public abstract class Game {
 		currentScene = scene;
 		scene.setGame(this);
 		scene.onSetAsCurrent();
-	}
-
-	public void changeScene(final GameScene scene) {
-		Mouse.get().reset();
-		KeyBoard.get().reset();
-		EventManager.get().reset();
-		this.setCurrentScene(scene);
 	}
 
 }
