@@ -2,6 +2,12 @@ package ar.edu.unq.americana.colissions;
 
 import static java.awt.geom.Point2D.distanceSq;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import ar.edu.unq.americana.GameComponent;
+import ar.edu.unq.americana.appearances.Sprite;
+
 public class CollisionDetector {
 
 	protected CollisionDetector() {
@@ -142,6 +148,71 @@ public class CollisionDetector {
 			return false;
 		}
 		return true;
+	}
+
+	public static boolean perfectPixel(final GameComponent<?> component1,
+			final GameComponent<?> component2) {
+		final Sprite appearance1 = (Sprite) component1.getAppearance();
+		final Sprite appearance2 = (Sprite) component2.getAppearance();
+
+		final BufferedImage image1 = appearance1.getImage();
+		final BufferedImage image2 = appearance2.getImage();
+
+		final int aLeft = (int) appearance1.getX();
+		final int aTop = (int) appearance2.getY();
+		final int aWidth = (int) appearance1.getWidth();
+		final int aHeight = (int) appearance1.getHeight();
+		final int aRight = aLeft + aWidth;
+		final int aBottom = aTop - aHeight;
+
+		final int bLeft = (int) appearance2.getX();
+		final int bTop = (int) appearance2.getY();
+		final int bWidth = (int) appearance2.getWidth();
+		final int bHeight = (int) appearance2.getHeight();
+		final int bRight = bLeft + bWidth;
+		final int bBottom = bTop - bHeight;
+
+		final Rectangle bounds1 = new Rectangle(aLeft, aTop, aWidth, aHeight);
+		final Rectangle bounds2 = new Rectangle(bLeft, bTop, bWidth, bHeight);
+		final boolean isIntersect = !(bounds1.createIntersection(bounds2))
+				.isEmpty();
+		if (isIntersect) {
+			final Rectangle collisionBounds = getCollisionBounds(aLeft, aRight,
+					aTop, aBottom, bLeft, bRight, bTop, bBottom);
+
+			final int left = (int) collisionBounds.getX();
+			final double right = collisionBounds.getX()
+					+ collisionBounds.getWidth();
+			for (int i = left; i < right; i++) {
+				final int top = (int) collisionBounds.getY();
+				final double bottom = collisionBounds.getY()
+						+ collisionBounds.getHeight();
+				for (int j = top; j < bottom; j++) {
+					if (isFilled(image1, i - aLeft, j - aTop)
+							&& isFilled(image2, i - bLeft, j - bTop)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private static Rectangle getCollisionBounds(final int aLeft,
+			final int aRight, final int aTop, final int aBottom,
+			final int bLeft, final int bRight, final int bTop, final int bBottom) {
+		final int left = Math.max(aLeft, bLeft);
+		final int top = Math.max(aTop, bTop);
+		final int right = Math.min(aRight, bRight);
+		final int bottom = Math.min(aBottom, bBottom);
+		return new Rectangle(left, top, right - left, bottom - top);
+	}
+
+	public static boolean isFilled(final BufferedImage image, final int i,
+			final int j) {
+		final int pixel = image.getRGB(i, j); // get the RGB value of the pixel
+		return ((pixel >> 24) & 0xff) != 0;
 	}
 
 }

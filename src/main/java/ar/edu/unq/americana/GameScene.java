@@ -27,10 +27,10 @@ public class GameScene {
 	public GameScene() {
 		this.setComponents(new ArrayList<GameComponent<?>>());
 		this.setEventQueue(new EventQueue());
-		this.addComponents(Arrays.asList(ComponentUtils.commonComponents()));
 		Mouse.get().reset();
 		KeyBoard.get().reset();
 		EventManager.get().reset();
+		this.addComponents(Arrays.asList(ComponentUtils.commonComponents()));
 	}
 
 	public GameScene(final GameComponent<? extends GameScene>... components) {

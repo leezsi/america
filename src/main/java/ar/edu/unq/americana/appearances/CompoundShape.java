@@ -17,6 +17,7 @@ public class CompoundShape extends Shape {
 		for (final Shape shape : shapes) {
 			shape.setComponent(component);
 		}
+		super.setComponent(component);
 	}
 
 	@Override
