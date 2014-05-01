@@ -4,14 +4,12 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import java.awt.Graphics2D;
-import java.util.List;
 
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
 import ar.edu.unq.americana.appearances.Shape;
-import ar.edu.unq.americana.events.game.EventManager;
-import ar.edu.unq.americana.events.game.GameEvent;
-import ar.edu.unq.americana.events.game.UpdateEvent;
+import ar.edu.unq.americana.events.ioc.EventManager;
+import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.rules.IRule;
 import ar.edu.unq.americana.utils.Vector2D;
 
@@ -23,7 +21,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 	private double y;
 	private int z;
 	private boolean destroyPending;
-	private List<? extends UpdateEvent> updateEvents;
 	private IRule<?, ?>[] rules;
 	private Vector2D direction = new Vector2D(0, 0);
 	private double speed;
@@ -45,7 +42,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 		this.setAppearance((Shape) appearance);
 		this.setX(x);
 		this.setY(y);
-		this.updateEvents = UpdateEvent.getEvents(this);
 		this.rules = this.rules();
 	}
 
@@ -91,6 +87,11 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	public void destroy() {
 		this.setDestroyPending(true);
+	}
+
+	protected void fire(final FiredEvent event) {
+		EventManager.fire(event);
+
 	}
 
 	// ****************************************************************
@@ -172,9 +173,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 			}
 		}
 
-		for (final UpdateEvent event : this.updateEvents) {
-			event.execute(deltaState);
-		}
 		this.getAppearance().update(deltaState.getDelta());
 	}
 
@@ -229,10 +227,6 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	protected void setDestroyPending(final boolean destroyPending) {
 		this.destroyPending = destroyPending;
-	}
-
-	protected void fireEvent(final GameEvent event) {
-		EventManager.get().fireEvent(event);
 	}
 
 	public Vector2D getDirection() {

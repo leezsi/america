@@ -17,8 +17,13 @@ public abstract class Game {
 	public Game() {
 		this.setCurrentScene(new GameScene());
 		this.loadProperties();
+		this.preInitialize();
 		this.initializeResources();
 		this.setUpScenes();
+	}
+
+	protected void preInitialize() {
+
 	}
 
 	// ****************************************************************
@@ -29,12 +34,12 @@ public abstract class Game {
 
 	protected abstract void setUpScenes();
 
-	protected String[] propertiesFiles() {
+	protected String[] properties() {
 		return new String[0];
 	}
 
 	private void loadProperties() {
-		for (final String path : this.propertiesFiles()) {
+		for (final String path : this.properties()) {
 			Tuning.load(path);
 		}
 

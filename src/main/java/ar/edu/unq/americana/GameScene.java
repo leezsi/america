@@ -6,12 +6,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import ar.edu.unq.americana.components.KeyBoard;
-import ar.edu.unq.americana.components.Mouse;
-import ar.edu.unq.americana.components.utils.ComponentUtils;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
-import ar.edu.unq.americana.events.game.EventManager;
+import ar.edu.unq.americana.events.ioc.EventManager;
 
 public class GameScene {
 
@@ -27,10 +24,6 @@ public class GameScene {
 	public GameScene() {
 		this.setComponents(new ArrayList<GameComponent<?>>());
 		this.setEventQueue(new EventQueue());
-		Mouse.get().reset();
-		KeyBoard.get().reset();
-		EventManager.get().reset();
-		this.addComponents(Arrays.asList(ComponentUtils.commonComponents()));
 	}
 
 	public GameScene(final GameComponent<? extends GameScene>... components) {
@@ -113,8 +106,6 @@ public class GameScene {
 		final ArrayList<GameComponent<?>> allComponents = new ArrayList<GameComponent<?>>(
 				this.getComponents());
 
-		Mouse.get().privateUpdate(state);
-		KeyBoard.get().privateUpdate(state);
 		for (final GameComponent<?> component : allComponents) {
 			if (this.getGame() == null) {
 				break;
@@ -126,7 +117,6 @@ public class GameScene {
 				component.render(graphics);
 			}
 		}
-		Mouse.get().render(graphics);
 	}
 
 	// ****************************************************************
@@ -137,9 +127,7 @@ public class GameScene {
 	public void addComponent(final GameComponent component) {
 		this.getComponents().add(this.indexToInsert(component), component);
 		component.setScene(this);
-		Mouse.get().registerComponentEvents(component);
-		KeyBoard.get().registerComponentEvents(component);
-		EventManager.get().registerComponentEvents(component);
+		EventManager.registry(component);
 	}
 
 	public void addComponents(final GameComponent<?>... components) {
@@ -156,11 +144,9 @@ public class GameScene {
 	}
 
 	public void removeComponent(final GameComponent<?> component) {
+		EventManager.unregistry(component);
 		this.getComponents().remove(component);
 		component.setScene(null);
-		Mouse.get().deresgister(component);
-		KeyBoard.get().deresgister(component);
-		EventManager.get().deresgister(component);
 	}
 
 	public void removeComponents(final GameComponent<?>... components) {

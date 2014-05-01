@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unq.americana.GameComponent;
-import ar.edu.unq.americana.components.KeyBoard;
-import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.exceptions.GameException;
 
 public class ComponentUtils {
@@ -44,10 +42,6 @@ public class ComponentUtils {
 
 	}
 
-	public static GameComponent<?>[] commonComponents() {
-		return new GameComponent<?>[] { Mouse.get(), KeyBoard.get() };
-	}
-
 	public static Method[] filterMethodsByAnnotation(final Class<?> clazz,
 			final Class<? extends Annotation> annotationClass) {
 		final Method[] all = clazz.getMethods();
@@ -58,18 +52,6 @@ public class ComponentUtils {
 			}
 		}
 		return result.toArray(new Method[result.size()]);
-	}
-
-	public static List<GameComponent<?>> filterNonTrivialComponents(
-			final GameComponent<?> component,
-			final List<GameComponent<?>> components) {
-		final List<GameComponent<?>> clone = new ArrayList<GameComponent<?>>(
-				components);
-		for (final GameComponent<?> common : commonComponents()) {
-			clone.remove(common);
-		}
-		clone.remove(component);
-		return clone;
 	}
 
 	@SuppressWarnings("unchecked")

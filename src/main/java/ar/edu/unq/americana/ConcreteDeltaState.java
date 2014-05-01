@@ -6,6 +6,11 @@ import java.util.Set;
 
 import ar.edu.unq.americana.constants.Key;
 import ar.edu.unq.americana.constants.MouseButton;
+import ar.edu.unq.americana.events.annotations.EventType;
+import ar.edu.unq.americana.events.ioc.EventManager;
+import ar.edu.unq.americana.events.ioc.keyboard.KeyboarEvent;
+import ar.edu.unq.americana.events.ioc.mouse.MouseEvent;
+import ar.edu.unq.americana.events.ioc.update.UpdateEvent;
 
 public class ConcreteDeltaState implements DeltaState {
 
@@ -41,17 +46,17 @@ public class ConcreteDeltaState implements DeltaState {
 	// ****************************************************************
 
 	@Override
-	public boolean isKeyPressed(Key key) {
+	public boolean isKeyPressed(final Key key) {
 		return this.getPressedKeys().contains(key);
 	}
 
 	@Override
-	public boolean isKeyReleased(Key key) {
+	public boolean isKeyReleased(final Key key) {
 		return this.getReleasedKeys().contains(key);
 	}
 
 	@Override
-	public boolean isKeyBeingHold(Key key) {
+	public boolean isKeyBeingHold(final Key key) {
 		return this.getHoldedKeys().contains(key);
 	}
 
@@ -61,17 +66,17 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	@Override
-	public boolean isMouseButtonPressed(MouseButton button) {
+	public boolean isMouseButtonPressed(final MouseButton button) {
 		return this.getPressedMouseButtons().contains(button);
 	}
 
 	@Override
-	public boolean isMouseButtonReleased(MouseButton button) {
+	public boolean isMouseButtonReleased(final MouseButton button) {
 		return this.getReleasedMouseButtons().contains(button);
 	}
 
 	@Override
-	public boolean isMouseButtonBeingHold(MouseButton button) {
+	public boolean isMouseButtonBeingHold(final MouseButton button) {
 		return this.getHoldedMouseButtons().contains(button);
 	}
 
@@ -87,28 +92,34 @@ public class ConcreteDeltaState implements DeltaState {
 		this.getReleasedMouseButtons().clear();
 	}
 
-	public void setKeyPressed(Key key) {
+	public void setKeyPressed(final Key key) {
 		this.getPressedKeys().add(key);
 		this.getHoldedKeys().add(key);
+		EventManager.fire(new KeyboarEvent(EventType.Pressed, key), this);
+		EventManager.fire(new KeyboarEvent(EventType.BeingHold, key), this);
 	}
 
-	public void setKeyReleased(Key key) {
+	public void setKeyReleased(final Key key) {
 		this.getReleasedKeys().add(key);
 		this.getHoldedKeys().remove(key);
+		EventManager.fire(new KeyboarEvent(EventType.Released, key), this);
 	}
 
-	public void setMousePosition(Point2D.Double position) {
+	public void setMousePosition(final Point2D.Double position) {
 		this.setCurrentMousePosition(position);
 	}
 
-	public void setMouseButtonPressed(MouseButton button) {
+	public void setMouseButtonPressed(final MouseButton button) {
 		this.getPressedMouseButtons().add(button);
 		this.getHoldedMouseButtons().add(button);
+		EventManager.fire(new MouseEvent(EventType.Pressed, button), this);
+		EventManager.fire(new MouseEvent(EventType.BeingHold, button), this);
 	}
 
-	public void setMouseButtonReleased(MouseButton button) {
+	public void setMouseButtonReleased(final MouseButton button) {
 		this.getReleasedMouseButtons().add(button);
 		this.getHoldedMouseButtons().remove(button);
+		EventManager.fire(new MouseEvent(EventType.Released, button), this);
 	}
 
 	// ****************************************************************
@@ -117,76 +128,81 @@ public class ConcreteDeltaState implements DeltaState {
 
 	@Override
 	public double getDelta() {
-		return this.delta;
+		return delta;
 	}
 
-	public void setDelta(double delta) {
+	public void setDelta(final double delta) {
 		this.delta = delta;
+		EventManager.fire(new UpdateEvent(), this);
 	}
 
 	protected Set<Key> getPressedKeys() {
-		return this.pressedKeys;
+		return pressedKeys;
 	}
 
-	protected void setPressedKeys(Set<Key> pressedKeys) {
+	protected void setPressedKeys(final Set<Key> pressedKeys) {
 		this.pressedKeys = pressedKeys;
 	}
 
 	protected Set<Key> getReleasedKeys() {
-		return this.releasedKeys;
+		return releasedKeys;
 	}
 
-	protected void setReleasedKeys(Set<Key> releasedKeys) {
+	protected void setReleasedKeys(final Set<Key> releasedKeys) {
 		this.releasedKeys = releasedKeys;
 	}
 
 	protected Set<Key> getHoldedKeys() {
-		return this.holdedKeys;
+		return holdedKeys;
 	}
 
-	protected void setHoldedKeys(Set<Key> holdedKeys) {
+	protected void setHoldedKeys(final Set<Key> holdedKeys) {
 		this.holdedKeys = holdedKeys;
 	}
 
 	@Override
 	public Point2D.Double getLastMousePosition() {
-		return this.lastMousePosition;
+		return lastMousePosition;
 	}
 
-	protected void setLastMousePosition(Point2D.Double lastMousePosition) {
+	protected void setLastMousePosition(final Point2D.Double lastMousePosition) {
 		this.lastMousePosition = lastMousePosition;
 	}
 
 	@Override
 	public Point2D.Double getCurrentMousePosition() {
-		return this.currentMousePosition;
+		return currentMousePosition;
 	}
 
-	protected void setCurrentMousePosition(Point2D.Double currentMousePosition) {
+	protected void setCurrentMousePosition(
+			final Point2D.Double currentMousePosition) {
 		this.currentMousePosition = currentMousePosition;
 	}
 
 	protected Set<MouseButton> getPressedMouseButtons() {
-		return this.pressedMouseButtons;
+		return pressedMouseButtons;
 	}
 
-	protected void setPressedMouseButtons(Set<MouseButton> pressedMouseButtons) {
+	protected void setPressedMouseButtons(
+			final Set<MouseButton> pressedMouseButtons) {
 		this.pressedMouseButtons = pressedMouseButtons;
 	}
 
 	protected Set<MouseButton> getReleasedMouseButtons() {
-		return this.releasedMouseButtons;
+		return releasedMouseButtons;
 	}
 
-	protected void setReleasedMouseButtons(Set<MouseButton> releasedMouseButtons) {
+	protected void setReleasedMouseButtons(
+			final Set<MouseButton> releasedMouseButtons) {
 		this.releasedMouseButtons = releasedMouseButtons;
 	}
 
 	protected Set<MouseButton> getHoldedMouseButtons() {
-		return this.holdedMouseButtons;
+		return holdedMouseButtons;
 	}
 
-	protected void setHoldedMouseButtons(Set<MouseButton> holdedMouseButtons) {
+	protected void setHoldedMouseButtons(
+			final Set<MouseButton> holdedMouseButtons) {
 		this.holdedMouseButtons = holdedMouseButtons;
 	}
 }

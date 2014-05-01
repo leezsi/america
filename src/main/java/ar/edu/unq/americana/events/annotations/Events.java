@@ -7,89 +7,39 @@ import java.lang.annotation.Target;
 
 import ar.edu.unq.americana.constants.Key;
 import ar.edu.unq.americana.constants.MouseButton;
-import ar.edu.unq.americana.events.game.GameEvent;
+import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = { ElementType.METHOD })
 public @interface Events {
 
-	// keyboard
 	@Retention(RetentionPolicy.RUNTIME)
-	@Target(value = ElementType.METHOD)
-	public @interface Keyboard {
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Press {
-			Key value();
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Release {
-			Key value();
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface BeingHold {
-			Key value();
-		}
-	}
-
-	// mouse
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(value = ElementType.METHOD)
+	@Target(value = { ElementType.METHOD })
 	public @interface Mouse {
+		MouseButton button() default MouseButton.ANY;
 
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface In {
-
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Out {
-
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Move {
-
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Press {
-			MouseButton value();
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface Release {
-			MouseButton value();
-		}
-
-		@Retention(RetentionPolicy.RUNTIME)
-		@Target(value = ElementType.METHOD)
-		public @interface BeingHold {
-			MouseButton value();
-		}
+		EventType type();
 	}
 
-	// update
 	@Retention(RetentionPolicy.RUNTIME)
-	@Target(value = ElementType.METHOD)
-	public @interface Update {
+	@Target(value = { ElementType.METHOD })
+	public @interface Keyboard {
+		Key key() default Key.ANY;
+
+		EventType type();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = { ElementType.METHOD })
 	public @interface Fired {
-		Class<? extends GameEvent> value();
+
+		Class<? extends FiredEvent> value();
+
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(value = { ElementType.METHOD })
+	public @interface Update {
+
+	}
 }
