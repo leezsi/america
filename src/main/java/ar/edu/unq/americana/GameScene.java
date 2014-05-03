@@ -22,6 +22,7 @@ public class GameScene {
 	// ****************************************************************
 
 	public GameScene() {
+		EventManager.reset();
 		this.setComponents(new ArrayList<GameComponent<?>>());
 		this.setEventQueue(new EventQueue());
 	}

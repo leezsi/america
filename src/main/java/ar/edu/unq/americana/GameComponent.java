@@ -81,8 +81,9 @@ public abstract class GameComponent<SceneType extends GameScene> {
 	}
 
 	public void move(final Vector2D where) {
-		this.setX(where.getX());
-		this.setY(where.getY());
+		final Vector2D newPos = new Vector2D(getX(), getY()).suma(where);
+		this.setX(newPos.getX());
+		this.setY(newPos.getY());
 	}
 
 	public void destroy() {

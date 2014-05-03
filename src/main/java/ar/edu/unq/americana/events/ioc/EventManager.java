@@ -84,4 +84,8 @@ public class EventManager {
 		}
 	}
 
+	public static void reset() {
+		handlers = new HashMap<Class<?>, List<Handler<?>>>();
+	}
+
 }
