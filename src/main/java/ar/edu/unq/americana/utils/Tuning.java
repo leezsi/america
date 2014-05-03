@@ -86,6 +86,10 @@ public class Tuning {
 		}
 	}
 
+	public static boolean isSet(final String property) {
+		return properties.containsKey(property);
+	}
+
 	static public Class<?> getClass(final String key) {
 		return getClass(key, null);
 	}

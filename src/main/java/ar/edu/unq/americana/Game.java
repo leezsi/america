@@ -3,6 +3,7 @@ package ar.edu.unq.americana;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
+import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.utils.Tuning;
 
@@ -17,6 +18,7 @@ public abstract class Game {
 	public Game() {
 		this.setCurrentScene(new GameScene());
 		this.loadProperties();
+		Configs.injectConfigs(this.getClass());
 		this.preInitialize();
 		this.initializeResources();
 		this.setUpScenes();

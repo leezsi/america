@@ -66,7 +66,6 @@ public abstract class SimpleAppearance<T extends Appearance> extends Shape
 	@Override
 	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
-		// this.renderAt((int) this.getX(), (int) this.getY(), graphics);
 		this.doRenderAt((int) this.getX(), (int) this.getY(), graphics);
 	}
 

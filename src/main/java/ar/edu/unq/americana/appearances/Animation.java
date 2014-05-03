@@ -111,6 +111,7 @@ public class Animation extends Shape {
 	@Override
 	public void render(final GameComponent<?> component,
 			final Graphics2D graphics) {
+		this.getCurrentSprite().setComponent(component);
 		this.getCurrentSprite().render(component, graphics);
 	}
 

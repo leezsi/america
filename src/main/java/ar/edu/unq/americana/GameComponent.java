@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
 import ar.edu.unq.americana.appearances.Shape;
+import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.rules.IRule;
@@ -39,6 +40,7 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	public GameComponent(final Appearance appearance, final double x,
 			final double y) {
+		Configs.injectConfigs(this.getClass());
 		this.setAppearance((Shape) appearance);
 		this.setX(x);
 		this.setY(y);
