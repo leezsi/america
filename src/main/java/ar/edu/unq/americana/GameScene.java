@@ -106,6 +106,7 @@ public class GameScene {
 		this.setLastUpdateTime(now);
 
 		final DeltaState state = this.getEventQueue().takeState(delta);
+		state.fireEvents();
 		final ArrayList<GameComponent<?>> allComponents = new ArrayList<GameComponent<?>>(
 				this.getComponents());
 		for (final GameComponent<?> component : allComponents) {

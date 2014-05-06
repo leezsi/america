@@ -96,7 +96,6 @@ public class ConcreteDeltaState implements DeltaState {
 		this.getPressedKeys().add(key);
 		this.getHoldedKeys().add(key);
 		EventManager.fire(new KeyboarEvent(EventType.Pressed, key), this);
-		EventManager.fire(new KeyboarEvent(EventType.BeingHold, key), this);
 	}
 
 	public void setKeyReleased(final Key key) {
@@ -113,7 +112,6 @@ public class ConcreteDeltaState implements DeltaState {
 		this.getPressedMouseButtons().add(button);
 		this.getHoldedMouseButtons().add(button);
 		EventManager.fire(new MouseEvent(EventType.Pressed, button), this);
-		EventManager.fire(new MouseEvent(EventType.BeingHold, button), this);
 	}
 
 	public void setMouseButtonReleased(final MouseButton button) {
@@ -128,7 +126,7 @@ public class ConcreteDeltaState implements DeltaState {
 
 	@Override
 	public double getDelta() {
-		return delta;
+		return this.delta;
 	}
 
 	public void setDelta(final double delta) {
@@ -137,7 +135,7 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<Key> getPressedKeys() {
-		return pressedKeys;
+		return this.pressedKeys;
 	}
 
 	protected void setPressedKeys(final Set<Key> pressedKeys) {
@@ -145,7 +143,7 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<Key> getReleasedKeys() {
-		return releasedKeys;
+		return this.releasedKeys;
 	}
 
 	protected void setReleasedKeys(final Set<Key> releasedKeys) {
@@ -153,7 +151,7 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<Key> getHoldedKeys() {
-		return holdedKeys;
+		return this.holdedKeys;
 	}
 
 	protected void setHoldedKeys(final Set<Key> holdedKeys) {
@@ -162,7 +160,7 @@ public class ConcreteDeltaState implements DeltaState {
 
 	@Override
 	public Point2D.Double getLastMousePosition() {
-		return lastMousePosition;
+		return this.lastMousePosition;
 	}
 
 	protected void setLastMousePosition(final Point2D.Double lastMousePosition) {
@@ -171,7 +169,7 @@ public class ConcreteDeltaState implements DeltaState {
 
 	@Override
 	public Point2D.Double getCurrentMousePosition() {
-		return currentMousePosition;
+		return this.currentMousePosition;
 	}
 
 	protected void setCurrentMousePosition(
@@ -180,7 +178,7 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<MouseButton> getPressedMouseButtons() {
-		return pressedMouseButtons;
+		return this.pressedMouseButtons;
 	}
 
 	protected void setPressedMouseButtons(
@@ -189,7 +187,7 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<MouseButton> getReleasedMouseButtons() {
-		return releasedMouseButtons;
+		return this.releasedMouseButtons;
 	}
 
 	protected void setReleasedMouseButtons(
@@ -198,11 +196,23 @@ public class ConcreteDeltaState implements DeltaState {
 	}
 
 	protected Set<MouseButton> getHoldedMouseButtons() {
-		return holdedMouseButtons;
+		return this.holdedMouseButtons;
 	}
 
 	protected void setHoldedMouseButtons(
 			final Set<MouseButton> holdedMouseButtons) {
 		this.holdedMouseButtons = holdedMouseButtons;
+	}
+
+	@Override
+	public void fireEvents() {
+		for (final Key key : this.getHoldedKeys()) {
+			EventManager.fire(new KeyboarEvent(EventType.BeingHold, key), this);
+		}
+
+		for (final MouseButton button : this.getHoldedMouseButtons()) {
+			EventManager
+					.fire(new MouseEvent(EventType.BeingHold, button), this);
+		}
 	}
 }

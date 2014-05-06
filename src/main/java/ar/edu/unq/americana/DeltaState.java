@@ -27,4 +27,6 @@ public interface DeltaState {
 
 	public abstract Point2D.Double getCurrentMousePosition();
 
+	public void fireEvents();
+
 }
