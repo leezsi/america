@@ -210,4 +210,11 @@ public class GameScene {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 
+	public void destroy() {
+		for (final GameComponent<?> component : this.getComponents()) {
+			component.destroy();
+		}
+		this.setGame(null);
+	}
+
 }

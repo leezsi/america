@@ -92,7 +92,7 @@ public class Label extends Shape {
 	// ****************************************************************
 
 	public Font getFont() {
-		return font;
+		return this.font;
 	}
 
 	public void setFont(final Font font) {
@@ -100,7 +100,7 @@ public class Label extends Shape {
 	}
 
 	public Color getColor() {
-		return color;
+		return this.color;
 	}
 
 	public void setColor(final Color color) {
@@ -108,7 +108,7 @@ public class Label extends Shape {
 	}
 
 	protected List<String> getTextLines() {
-		return textLines;
+		return this.textLines;
 	}
 
 	protected void setTextLines(final List<String> textLines) {
@@ -120,9 +120,7 @@ public class Label extends Shape {
 			final Graphics2D graphics) {
 		graphics.setFont(this.getFont());
 		graphics.setColor(this.getColor());
-
 		this.getTextLines().get(0);
-
 		for (int index = 0; index < this.getTextLines().size(); index++) {
 			graphics.drawString(this.getTextLines().get(index), //
 					(int) this.getX(), //

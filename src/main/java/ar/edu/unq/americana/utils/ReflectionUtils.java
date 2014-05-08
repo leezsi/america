@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ar.edu.unq.americana.GameComponent;
@@ -60,6 +61,9 @@ public class ReflectionUtils {
 		try {
 			method.invoke(target, params);
 		} catch (final Exception e) {
+			System.err.println(method.getName()
+					+ Arrays.toString(method.getParameters()) + "  :  "
+					+ Arrays.toString(params));
 			throw new GameException(e);
 		}
 		method.setAccessible(isAccessible);

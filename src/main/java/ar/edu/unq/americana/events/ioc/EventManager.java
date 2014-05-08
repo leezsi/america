@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ar.edu.unq.americana.DeltaState;
+import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.events.annotations.Events;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEventHandler;
@@ -26,8 +27,6 @@ public class EventManager {
 		annotationMap.put(Events.Update.class, new UpdateHandler());
 		annotationMap.put(Events.Fired.class,
 				new FiredEventHandler<FiredEvent>());
-		// annotationMap.put(Events.Collision.class, new
-		// CollisionEventHandler());
 	}
 
 	private static Map<Class<?>, List<Handler<?>>> handlers = new HashMap<Class<?>, List<Handler<?>>>();
@@ -70,11 +69,15 @@ public class EventManager {
 
 	public static void fire(final AmericanaEvent<?> event,
 			final DeltaState deltaState) {
+		final List<Handler<?>> handlers_ = handlers.get(event.getClass());
 		final List<Handler<?>> toExecute = new ArrayList<Handler<?>>(
-				handlers.get(event.getClass()));
+				handlers_ == null ? new ArrayList<Handler<?>>() : handlers_);
 		if (toExecute != null) {
 			for (final Handler<?> handler : toExecute) {
-				handler.executeOn(deltaState);
+				if (!((GameComponent<?>) handler.getTarget())
+						.isDestroyPending()) {
+					handler.executeOn(deltaState);
+				}
 			}
 		}
 	}

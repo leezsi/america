@@ -2,6 +2,7 @@ package ar.edu.unq.americana;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.ResourceBundle;
 
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
@@ -10,12 +11,14 @@ import ar.edu.unq.americana.utils.Tuning;
 public abstract class Game {
 
 	private GameScene currentScene;
+	private ResourceBundle localeBoundle;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
 	// ****************************************************************
 
 	public Game() {
+		this.initializeLocale();
 		this.setCurrentScene(new GameScene());
 		this.loadProperties();
 		Configs.injectAndReadBeans(this);
@@ -23,6 +26,18 @@ public abstract class Game {
 		this.preInitialize();
 		this.initializeResources();
 		this.setUpScenes();
+	}
+
+	private void initializeLocale() {
+		this.localeBoundle = ResourceBundle.getBundle(this.localeFile());
+	}
+
+	public ResourceBundle getLocaleBoundle() {
+		return this.localeBoundle;
+	}
+
+	protected String localeFile() {
+		return this.getClass().getSimpleName() + "_strings";
 	}
 
 	protected void preInitialize() {
@@ -89,7 +104,7 @@ public abstract class Game {
 
 	public void setCurrentScene(final GameScene scene) {
 		if (this.getCurrentScene() != null) {
-			this.getCurrentScene().setGame(null);
+			this.getCurrentScene().destroy();
 		}
 		this.currentScene = scene;
 		scene.setGame(this);
