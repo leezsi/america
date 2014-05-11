@@ -1,10 +1,11 @@
 package ar.edu.unq.americana.appearances;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import ar.edu.unq.americana.GameComponent;
 
-public class Animation extends Shape {
+public class Animation extends Shape implements IImageGet {
 	private double meantime;
 	private Sprite[] sprites;
 	private int currentIndex;
@@ -113,6 +114,11 @@ public class Animation extends Shape {
 			final Graphics2D graphics) {
 		this.getCurrentSprite().setComponent(component);
 		this.getCurrentSprite().render(component, graphics);
+	}
+
+	@Override
+	public BufferedImage getImage() {
+		return this.getCurrentSprite().getImage();
 	}
 
 }

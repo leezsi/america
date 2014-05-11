@@ -234,7 +234,7 @@ public abstract class GameComponent<SceneType extends GameScene> {
 		return this.destroyPending;
 	}
 
-	protected void setDestroyPending(final boolean destroyPending) {
+	public void setDestroyPending(final boolean destroyPending) {
 		this.destroyPending = destroyPending;
 	}
 

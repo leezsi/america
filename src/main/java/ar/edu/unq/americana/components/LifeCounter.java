@@ -40,4 +40,8 @@ public class LifeCounter<SceneType extends GameScene> extends
 			this.fire(new GameOverEvent());
 		}
 	}
+
+	public boolean isDead() {
+		return this.lives == 0;
+	}
 }

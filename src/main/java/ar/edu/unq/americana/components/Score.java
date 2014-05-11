@@ -45,4 +45,8 @@ public class Score<SceneType extends GameScene> extends
 		this.setX(10 + (this.label.getWidth() / 2));
 		this.setY((this.label.getHeight() / 2));
 	}
+
+	public int getScore() {
+		return this.score;
+	}
 }

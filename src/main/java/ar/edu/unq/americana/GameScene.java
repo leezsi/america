@@ -6,9 +6,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import ar.edu.unq.americana.components.Mouse;
+import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.events.ioc.EventManager;
+import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForTypeEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 
 public class GameScene {
@@ -17,6 +20,7 @@ public class GameScene {
 	private List<GameComponent<?>> components;
 	private EventQueue eventQueue;
 	private double lastUpdateTime;
+	private final Mouse<GameScene> mouse;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -25,8 +29,16 @@ public class GameScene {
 	public GameScene() {
 		EventManager.reset();
 		this.setComponents(new ArrayList<GameComponent<?>>());
-		this.setEventQueue(new EventQueue());
 		EventManager.registry(this);
+		this.mouse = new Mouse<GameScene>();
+		this.addComponent(this.mouse);
+		this.setEventQueue(new EventQueue());
+		Configs.injectAndReadBeans(this);
+		Configs.injectConfigs(this.getClass());
+	}
+
+	public Mouse<GameScene> getMouse() {
+		return this.mouse;
 	}
 
 	public GameScene(final GameComponent<? extends GameScene>... components) {
@@ -120,6 +132,7 @@ public class GameScene {
 				component.render(graphics);
 			}
 		}
+		EventManager.fire(new CollisionCheckForTypeEvent(), state);
 	}
 
 	// ****************************************************************

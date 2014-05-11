@@ -12,7 +12,7 @@ import ar.edu.unq.americana.utils.ClassLoaderResourcesProvider;
 import ar.edu.unq.americana.utils.ResourceProvider;
 
 @SuppressWarnings("unchecked")
-public class Sprite extends SimpleAppearance<Sprite> {
+public class Sprite extends SimpleAppearance<Sprite> implements IImageGet {
 
 	private BufferedImage image;
 	public static ResourceProvider defaultResourceProvider = new ClassLoaderResourcesProvider();

@@ -6,9 +6,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import ar.edu.unq.americana.GameComponent;
-import ar.edu.unq.americana.appearances.Animation;
 import ar.edu.unq.americana.appearances.Appearance;
-import ar.edu.unq.americana.appearances.Sprite;
+import ar.edu.unq.americana.appearances.IImageGet;
 import ar.edu.unq.americana.exceptions.GameException;
 
 public class CollisionDetector {
@@ -155,10 +154,10 @@ public class CollisionDetector {
 
 	public static boolean perfectPixel(final GameComponent<?> component1,
 			final GameComponent<?> component2) {
-		final Sprite appearance1 = getSprite(component1);
-		final Sprite appearance2 = getSprite(component2);
-		final BufferedImage image1 = appearance1.getImage();
-		final BufferedImage image2 = appearance2.getImage();
+		final Appearance appearance1 = component1.getAppearance();
+		final Appearance appearance2 = component2.getAppearance();
+		final BufferedImage image1 = getImage(component1);
+		final BufferedImage image2 = getImage(component2);
 
 		final Rectangle bounds1 = boundFromSprite(appearance1);
 		final Rectangle bounds2 = boundFromSprite(appearance2);
@@ -191,29 +190,20 @@ public class CollisionDetector {
 		return false;
 	}
 
-	private static Rectangle boundFromSprite(final Sprite sprite) {
-		final int x = (int) sprite.getX();
-		final int y = (int) sprite.getY();
-		final int width = (int) sprite.getWidth();
-		final int height = (int) sprite.getHeight();
-		return new Rectangle(x, y, width, height);
+	private static BufferedImage getImage(final GameComponent<?> component) {
+		if (component.getAppearance() instanceof IImageGet) {
+			return ((IImageGet) component.getAppearance()).getImage();
+		}
+		throw new GameException("component " + component
+				+ " must implements IImageGet");
 	}
 
-	private static Sprite getSprite(final GameComponent<?> component) {
-		final Appearance appearance = component.getAppearance();
-		final Class<? extends Appearance> appearanceClass = appearance
-				.getClass();
-		if (appearanceClass == Sprite.class) {
-			return (Sprite) appearance;
-		} else if (appearanceClass == Animation.class) {
-			final Sprite currentSprite = ((Animation) appearance)
-					.getCurrentSprite();
-			currentSprite.setComponent(component);
-			return currentSprite;
-		} else {
-			throw new GameException("component " + component
-					+ " must have Sprite or Animation appearance");
-		}
+	private static Rectangle boundFromSprite(final Appearance appearance1) {
+		final int x = (int) appearance1.getX();
+		final int y = (int) appearance1.getY();
+		final int width = (int) appearance1.getWidth();
+		final int height = (int) appearance1.getHeight();
+		return new Rectangle(x, y, width, height);
 	}
 
 	public static boolean isFilled(final BufferedImage image, final int i,

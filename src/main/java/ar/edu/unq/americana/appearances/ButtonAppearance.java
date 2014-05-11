@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.exceptions.GameException;
 
-public class ButtonAppearance extends Label {
+public class ButtonAppearance extends Label implements IImageGet {
 	private BufferedImage defaultImage;
 
 	public ButtonAppearance(final Font font, final Color color,
@@ -71,6 +71,11 @@ public class ButtonAppearance extends Label {
 		graphics.drawImage(this.defaultImage, (int) this.getX() - 10,
 				(int) this.getY() + 5, null);
 		super.render(component, graphics);
+	}
+
+	@Override
+	public BufferedImage getImage() {
+		return this.defaultImage;
 	}
 
 }

@@ -16,7 +16,7 @@ public class SpriteSoundUtils {
 				/ sprite.getWidth());
 		return img.scaleVertically(newHeight / img.getHeight());
 	}
-	
+
 	public static Sound getSound(final String path) {
 		final InputStream input = ClassLoader.getSystemResourceAsStream(path);
 		return new SoundBuilder().buildSound(input);

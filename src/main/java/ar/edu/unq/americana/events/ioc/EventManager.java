@@ -10,10 +10,12 @@ import java.util.Map;
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.events.annotations.Events;
+import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForTypeEventHandler;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEventHandler;
 import ar.edu.unq.americana.events.ioc.keyboard.KeyboardHandler;
 import ar.edu.unq.americana.events.ioc.mouse.MouseHandler;
+import ar.edu.unq.americana.events.ioc.mouse.MouseMoveEventHandler;
 import ar.edu.unq.americana.events.ioc.update.UpdateHandler;
 import ar.edu.unq.americana.utils.ReflectionUtils;
 
@@ -27,6 +29,9 @@ public class EventManager {
 		annotationMap.put(Events.Update.class, new UpdateHandler());
 		annotationMap.put(Events.Fired.class,
 				new FiredEventHandler<FiredEvent>());
+		annotationMap.put(Events.Mouse.Move.class, new MouseMoveEventHandler());
+		annotationMap.put(Events.ColitionCheck.ForType.class,
+				new CollisionCheckForTypeEventHandler());
 	}
 
 	private static Map<Class<?>, List<Handler<?>>> handlers = new HashMap<Class<?>, List<Handler<?>>>();

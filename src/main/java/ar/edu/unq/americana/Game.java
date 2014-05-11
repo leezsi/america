@@ -2,6 +2,8 @@ package ar.edu.unq.americana;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 
 import ar.edu.unq.americana.configs.Configs;
@@ -12,6 +14,7 @@ public abstract class Game {
 
 	private GameScene currentScene;
 	private ResourceBundle localeBoundle;
+	private DesktopGameLauncher launcher;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -94,6 +97,12 @@ public abstract class Game {
 		this.getCurrentScene().pushEvent(event);
 	}
 
+	public void closeGame() {
+		final WindowEvent wev = new WindowEvent(this.launcher,
+				WindowEvent.WINDOW_CLOSING);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+	}
+
 	// ****************************************************************
 	// ** ACCESSORS
 	// ****************************************************************
@@ -109,6 +118,10 @@ public abstract class Game {
 		this.currentScene = scene;
 		scene.setGame(this);
 		scene.onSetAsCurrent();
+	}
+
+	public void setLauncher(final DesktopGameLauncher launcher) {
+		this.launcher = launcher;
 	}
 
 }

@@ -15,6 +15,7 @@ public class DesktopGameLauncher extends JFrame {
 	// ****************************************************************
 
 	public DesktopGameLauncher(final Game game) {
+		game.setLauncher(this);
 		final GamePlayer player = new GamePlayer(game);
 
 		this.setPlayer(player);
@@ -72,7 +73,7 @@ public class DesktopGameLauncher extends JFrame {
 	// ****************************************************************
 
 	protected GamePlayer getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	protected void setPlayer(final GamePlayer player) {

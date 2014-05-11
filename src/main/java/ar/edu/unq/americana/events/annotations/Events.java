@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.constants.Key;
 import ar.edu.unq.americana.constants.MouseButton;
+import ar.edu.unq.americana.events.ioc.collision.CollisionStrategy;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -20,6 +21,13 @@ public @interface Events {
 		MouseButton button() default MouseButton.ANY;
 
 		EventType type();
+
+		@Retention(RetentionPolicy.RUNTIME)
+		@Target(value = { ElementType.METHOD })
+		public @interface Move {
+			boolean oldAndNew();
+		}
+
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -46,7 +54,17 @@ public @interface Events {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = { ElementType.METHOD })
-	public @interface Collision {
-		Class<? extends GameComponent<?>> target();
+	public @interface ColitionCheck {
+
+		@Retention(RetentionPolicy.RUNTIME)
+		@Target(value = { ElementType.METHOD })
+		public @interface ForType {
+			@SuppressWarnings("rawtypes")
+			Class<? extends GameComponent> type() default GameComponent.class;
+
+			CollisionStrategy collisionStrategy();
+		}
+
 	}
+
 }

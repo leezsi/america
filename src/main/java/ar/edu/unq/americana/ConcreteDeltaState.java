@@ -10,6 +10,7 @@ import ar.edu.unq.americana.events.annotations.EventType;
 import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.events.ioc.keyboard.KeyboarEvent;
 import ar.edu.unq.americana.events.ioc.mouse.MouseEvent;
+import ar.edu.unq.americana.events.ioc.mouse.MouseMoveEvent;
 import ar.edu.unq.americana.events.ioc.update.UpdateEvent;
 
 public class ConcreteDeltaState implements DeltaState {
@@ -106,6 +107,9 @@ public class ConcreteDeltaState implements DeltaState {
 
 	public void setMousePosition(final Point2D.Double position) {
 		this.setCurrentMousePosition(position);
+		if (!position.equals(this.getLastMousePosition())) {
+			EventManager.fire(new MouseMoveEvent(), this);
+		}
 	}
 
 	public void setMouseButtonPressed(final MouseButton button) {
