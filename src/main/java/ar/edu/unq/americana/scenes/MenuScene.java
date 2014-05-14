@@ -25,7 +25,7 @@ public abstract class MenuScene extends GameScene {
 
 		public MenuButtonBuilder(final MenuScene menuScene) {
 			this.scene = menuScene;
-			this.y = 0;
+			this.y = 1;
 		}
 
 		public MenuButtonBuilder xPosition(final double x) {
@@ -88,7 +88,7 @@ public abstract class MenuScene extends GameScene {
 	private void addText(final String disclamer) {
 		this.text = new Text<MenuScene>(disclamer, this.getFont(),
 				this.disclamerColor());
-		this.text.setY(30);
+		this.text.setY(50);
 		this.addComponent(this.text);
 	}
 

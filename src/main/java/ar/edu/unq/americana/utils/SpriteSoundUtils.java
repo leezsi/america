@@ -21,4 +21,8 @@ public class SpriteSoundUtils {
 		final InputStream input = ClassLoader.getSystemResourceAsStream(path);
 		return new SoundBuilder().buildSound(input);
 	}
+
+	public static Sprite rotate(final Sprite sprite, final double angle) {
+		return sprite.rotate(angle);
+	}
 }

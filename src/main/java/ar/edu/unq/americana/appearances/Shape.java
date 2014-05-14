@@ -19,8 +19,8 @@ public abstract class Shape implements Appearance {
 
 	public void changeOffset(final double dx, final double x, final double dy,
 			final double y) {
-		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().producto(x);
-		final Vector2D yOffset = new Vector2D(0, dy).asVersor().producto(y);
+		final Vector2D xOffset = new Vector2D(dx, 0).asVersor().multiply(x);
+		final Vector2D yOffset = new Vector2D(0, dy).asVersor().multiply(y);
 		this.offset = xOffset.suma(yOffset);
 	}
 

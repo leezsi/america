@@ -33,7 +33,9 @@ public abstract class AbstractPool<T extends GameComponent<?>> {
 		if (this.queue.isEmpty()) {
 			return this.createNew();
 		} else {
-			return this.queue.remove();
+			final T component = this.queue.remove();
+			component.setDestroyPending(false);
+			return component;
 		}
 	}
 
