@@ -2,6 +2,9 @@ package ar.edu.unq.americana.utils;
 
 import java.util.Random;
 
+import ar.edu.unq.americana.GameComponent;
+import ar.edu.unq.americana.math.Coordinate;
+
 public class TrigonometricsAndRandomUtils {
 
 	private static Random rnd = new Random();
@@ -44,8 +47,19 @@ public class TrigonometricsAndRandomUtils {
 	}
 
 	public static Vector2D vector(final double angle, final double module) {
-		final double y = Math.sin(angle) * module;
-		final double x = Math.cos(angle) * module;
-		return new Vector2D(x, y);
+		return new Coordinate.Polar(module, angle).toVector2D();
+	}
+
+	public static void fixPositionTo(final GameComponent<?> from,
+			final GameComponent<?> to) {
+		final double deltaY = from.getY() - to.getY();
+		final double deltaX = from.getX() - to.getX();
+		final double theta = Math.atan2(deltaY, deltaX);
+		final double module = Math.hypot(deltaX, deltaY);
+		final Vector2D newPos = new Coordinate.Polar(-module, theta)
+				.toVector2D();
+		System.err.println(new Vector2D(from.getX(), from.getY()).toString()
+				+ newPos);
+
 	}
 }

@@ -31,7 +31,7 @@ public abstract class Game {
 		this.setUpScenes();
 	}
 
-	private void initializeLocale() {
+	protected void initializeLocale() {
 		this.localeBoundle = ResourceBundle.getBundle(this.localeFile());
 	}
 
@@ -122,6 +122,10 @@ public abstract class Game {
 
 	public void setLauncher(final DesktopGameLauncher launcher) {
 		this.launcher = launcher;
+	}
+
+	public DesktopGameLauncher getLauncher() {
+		return this.launcher;
 	}
 
 }

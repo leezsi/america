@@ -195,6 +195,7 @@ public class Sprite extends SimpleAppearance<Sprite> implements IImageGet {
 	// ** ACCESSORS
 	// ****************************************************************
 
+	@Override
 	public BufferedImage getImage() {
 		return this.image;
 	}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ResourceBundle;
 
+import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.GameScene;
 import ar.edu.unq.americana.appearances.ButtonAppearance;
@@ -45,7 +46,7 @@ public class Button<SceneType extends GameScene> extends
 	}
 
 	@Events.Mouse(type = EventType.Released, button = MouseButton.LEFT)
-	private void clicked() {
+	private void clicked(final DeltaState state) {
 		if (CollisionDetector.perfectPixel(this, this.getScene().getMouse())) {
 			this.action.run();
 		}

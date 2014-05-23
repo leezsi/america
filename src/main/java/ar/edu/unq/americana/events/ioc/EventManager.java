@@ -10,6 +10,7 @@ import java.util.Map;
 import ar.edu.unq.americana.DeltaState;
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.events.annotations.Events;
+import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForGroupEventHandler;
 import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForTypeEventHandler;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEventHandler;
@@ -32,6 +33,8 @@ public class EventManager {
 		annotationMap.put(Events.Mouse.Move.class, new MouseMoveEventHandler());
 		annotationMap.put(Events.ColitionCheck.ForType.class,
 				new CollisionCheckForTypeEventHandler());
+		annotationMap.put(Events.ColitionCheck.ForGroup.class,
+				new CollisionCheckForGroupEventHandler());
 	}
 
 	private static Map<Class<?>, List<Handler<?>>> handlers = new HashMap<Class<?>, List<Handler<?>>>();
@@ -79,8 +82,12 @@ public class EventManager {
 				handlers_ == null ? new ArrayList<Handler<?>>() : handlers_);
 		if (toExecute != null) {
 			for (final Handler<?> handler : toExecute) {
-				if (!((GameComponent<?>) handler.getTarget())
-						.isDestroyPending()) {
+				final Object target = handler.getTarget();
+				if (target instanceof GameComponent<?>) {
+					if (!((GameComponent<?>) target).isDestroyPending()) {
+						handler.executeOn(deltaState);
+					}
+				} else {
 					handler.executeOn(deltaState);
 				}
 			}

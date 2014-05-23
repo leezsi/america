@@ -14,10 +14,28 @@ public class Score<SceneType extends GameScene> extends
 	private int score;
 	private final int deltaScore;
 	private final Label label;
+	private boolean firstX = true;
+	private boolean firstY = true;
 
 	public Score(final int deltaScore, final String font, final int fontSize,
 			final Color color) {
 		this(deltaScore, new Font(font, Font.BOLD, 24), color);
+	}
+
+	@Override
+	public void setX(final double x) {
+		if (this.firstX) {
+			super.setX(x);
+			this.firstX = false;
+		}
+	}
+
+	@Override
+	public void setY(final double y) {
+		if (this.firstY) {
+			super.setY(y);
+			this.firstY = false;
+		}
 	}
 
 	@Override

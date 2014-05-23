@@ -10,6 +10,7 @@ public class Animation extends Shape implements IImageGet {
 	private Sprite[] sprites;
 	private int currentIndex;
 	private double remainingTime;
+	private boolean pendingEnd;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -60,7 +61,15 @@ public class Animation extends Shape implements IImageGet {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Animation copy() {
-		return new Animation(this.getMeantime(), this.getSprites());
+		return new Animation(this.getMeantime(), this.copy(this.getSprites()));
+	}
+
+	private Sprite[] copy(final Sprite[] sprites) {
+		final Sprite[] tmp = new Sprite[sprites.length];
+		for (int i = 0; i < sprites.length; i++) {
+			tmp[i] = sprites[i].copy();
+		}
+		return tmp;
 	}
 
 	protected void advance() {
@@ -68,6 +77,8 @@ public class Animation extends Shape implements IImageGet {
 
 		if (this.getCurrentIndex() >= this.getSprites().length) {
 			this.setCurrentIndex(0);
+			this.pendingEnd = true;
+
 		}
 
 		this.setRemainingTime(this.getMeantime() - this.getRemainingTime());
@@ -81,7 +92,7 @@ public class Animation extends Shape implements IImageGet {
 		return this.meantime;
 	}
 
-	protected void setMeantime(final double meantime) {
+	public void setMeantime(final double meantime) {
 		this.meantime = meantime;
 	}
 
@@ -114,6 +125,9 @@ public class Animation extends Shape implements IImageGet {
 			final Graphics2D graphics) {
 		this.getCurrentSprite().setComponent(component);
 		this.getCurrentSprite().render(component, graphics);
+		if (this.pendingEnd) {
+			this.getComponent().onAnimationEnd();
+		}
 	}
 
 	@Override
@@ -121,4 +135,19 @@ public class Animation extends Shape implements IImageGet {
 		return this.getCurrentSprite().getImage();
 	}
 
+	public void scaleHorizontally(final double value) {
+		for (int i = 0; i < this.sprites.length; i++) {
+			final Sprite sprite = this.sprites[i];
+			this.sprites[i] = sprite.scaleHorizontally(value
+					/ sprite.getWidth());
+		}
+	}
+
+	public void scaleVertically(final double value) {
+		for (int i = 0; i < this.sprites.length; i++) {
+			final Sprite sprite = this.sprites[i];
+			this.sprites[i] = sprite
+					.scaleVertically(value / sprite.getHeight());
+		}
+	}
 }

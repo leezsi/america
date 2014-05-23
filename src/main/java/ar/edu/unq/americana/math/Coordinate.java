@@ -2,9 +2,9 @@ package ar.edu.unq.americana.math;
 
 import ar.edu.unq.americana.utils.Vector2D;
 
-public abstract class Cordinate<T extends Cordinate<?>> {
+public abstract class Coordinate<T extends Coordinate<?>> {
 
-	public static class Polar extends Cordinate<Polar> {
+	public static class Polar extends Coordinate<Polar> {
 		private double module;
 		private double angle;
 
@@ -44,16 +44,19 @@ public abstract class Cordinate<T extends Cordinate<?>> {
 			return "module:" + this.module + " alpha:" + this.angle;
 		}
 
+		@Override
 		public double getModule() {
 			return this.module;
 		}
 
+		@Override
 		public double getAlpha() {
 			return this.angle;
 		}
 
-		public void setAlpha(final double alpha) {
+		public Polar setAlpha(final double alpha) {
 			this.angle = alpha;
+			return this;
 		}
 
 		public void setModule(final double module) {
@@ -61,7 +64,7 @@ public abstract class Cordinate<T extends Cordinate<?>> {
 		}
 	}
 
-	public static class Cartesian extends Cordinate<Cartesian> {
+	public static class Cartesian extends Coordinate<Cartesian> {
 
 		private final double y;
 		private final double x;
@@ -88,10 +91,9 @@ public abstract class Cordinate<T extends Cordinate<?>> {
 
 		@Override
 		public Polar toPolar() {
-			final double module = Math.sqrt((this.x * this.x)
-					+ (this.y * this.y));
-			final double alpha = Math.atan(this.y / this.x);
-			return new Polar(module, alpha);
+			final double module = Math.hypot(this.x, this.y);
+			final double alpha = Math.atan2(this.y, this.x);
+			return new Polar(module, Math.toRadians(alpha));
 		}
 
 		@Override
@@ -109,17 +111,32 @@ public abstract class Cordinate<T extends Cordinate<?>> {
 			return "x:" + this.x + ";y:" + this.y;
 		}
 
-		public double getModule() {
-			return this.toPolar().getModule();
-		}
-
+		@Override
 		public double getX() {
 			return this.x;
 		}
 
+		@Override
 		public double getY() {
 			return this.y;
 		}
+
+	}
+
+	public double getAlpha() {
+		return this.toPolar().getAlpha();
+	}
+
+	public double getModule() {
+		return this.toPolar().getModule();
+	}
+
+	public double getX() {
+		return this.toCartesian().getX();
+	}
+
+	public double getY() {
+		return this.toCartesian().getY();
 	}
 
 	public abstract T add(final Cartesian cordinate);

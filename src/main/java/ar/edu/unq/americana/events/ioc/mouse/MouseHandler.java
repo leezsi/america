@@ -17,21 +17,22 @@ public class MouseHandler extends IOHandler<MouseEvent> {
 
 	@Override
 	public Handler<MouseEvent> copy() {
-		return new MouseHandler().fill(getTarget(), getMethod());
+		return new MouseHandler().fill(this.getTarget(), this.getMethod());
 	}
 
 	protected MouseButton getButton() {
-		return button;
+		return this.button;
 	}
 
 	@Override
 	public void executeOn(final DeltaState deltaState) {
 		if (this.getÈventType().mustExecute(this.getButton(), deltaState)) {
-			if (button.equals(Key.ANY)) {
+			if (this.button.equals(Key.ANY)) {
 				ReflectionUtils.invoke(this.getTarget(), this.getMethod(),
-						button);
+						this.button);
 			} else {
-				ReflectionUtils.invoke(this.getTarget(), this.getMethod());
+				ReflectionUtils.invoke(this.getTarget(), this.getMethod(),
+						deltaState);
 			}
 		}
 	}
@@ -41,8 +42,8 @@ public class MouseHandler extends IOHandler<MouseEvent> {
 		this.setMethod(method);
 		this.setTarget(target);
 		final Mouse annotation = method.getAnnotation(Events.Mouse.class);
-		button = annotation.button();
-		setType(annotation.type());
+		this.button = annotation.button();
+		this.setType(annotation.type());
 		return this;
 	}
 

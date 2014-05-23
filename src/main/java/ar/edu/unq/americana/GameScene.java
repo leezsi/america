@@ -11,6 +11,7 @@ import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.events.ioc.EventManager;
+import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForGroupEvent;
 import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForTypeEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 
@@ -133,6 +134,7 @@ public class GameScene {
 			}
 		}
 		EventManager.fire(new CollisionCheckForTypeEvent(), state);
+		EventManager.fire(new CollisionCheckForGroupEvent(), state);
 	}
 
 	// ****************************************************************

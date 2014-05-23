@@ -65,6 +65,17 @@ public @interface Events {
 			CollisionStrategy collisionStrategy();
 		}
 
+		@Retention(RetentionPolicy.RUNTIME)
+		@Target(value = { ElementType.METHOD })
+		public @interface ForGroup {
+			CollisionStrategy collisionStrategy();
+
+			boolean same() default false;
+
+			Class<?>[] exclude() default {};
+
+		}
+
 	}
 
 }

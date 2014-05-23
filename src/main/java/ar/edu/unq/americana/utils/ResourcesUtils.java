@@ -27,8 +27,8 @@ public class ResourcesUtils {
 	public static Font getFont(final String file, final int tt,
 			final int style, final float size) {
 		try {
-			Font font = Font.createFont(tt, ClassLoader.getSystemClassLoader()
-					.getResourceAsStream(file));
+			Font font = Font.createFont(tt,
+					ClassLoader.getSystemResourceAsStream(file));
 			font = font.deriveFont(size);
 			font = font.deriveFont(style);
 			return font;

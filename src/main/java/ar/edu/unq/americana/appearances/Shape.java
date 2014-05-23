@@ -1,5 +1,7 @@
 package ar.edu.unq.americana.appearances;
 
+import java.awt.Rectangle;
+
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.utils.Vector2D;
 
@@ -38,4 +40,24 @@ public abstract class Shape implements Appearance {
 		return this.component;
 	}
 
+	public double left() {
+		return this.getX();
+	}
+
+	public double top() {
+		return this.getY();
+	}
+
+	public double right() {
+		return this.left() + this.getWidth();
+	}
+
+	public double bottom() {
+		return this.top() + this.getHeight();
+	}
+
+	public Rectangle bounds() {
+		return new Rectangle((int) this.left(), (int) this.top(),
+				(int) this.getWidth(), (int) this.getHeight());
+	}
 }

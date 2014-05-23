@@ -4,6 +4,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import ar.edu.unq.americana.appearances.Appearance;
 import ar.edu.unq.americana.appearances.Invisible;
@@ -11,6 +12,7 @@ import ar.edu.unq.americana.appearances.Shape;
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
+import ar.edu.unq.americana.math.Coordinate;
 import ar.edu.unq.americana.rules.IRule;
 import ar.edu.unq.americana.utils.Vector2D;
 
@@ -135,6 +137,20 @@ public abstract class GameComponent<SceneType extends GameScene> {
 		this.alignTopTo(y - (this.getAppearance().getHeight() / 2));
 	}
 
+	public void alignVisualCloserTo(final GameComponent<?> target) {
+		final double deltaY = target.getY() - this.getY();
+		final double deltaX = target.getX() - this.getX();
+		final double theta = Math.atan2(deltaY, deltaX);
+		final Rectangle thisBounds = ((Shape) this.getAppearance()).bounds();
+		final Rectangle otherBounds = ((Shape) target.getAppearance()).bounds();
+		final Rectangle intersection = thisBounds.intersection(otherBounds);
+		final int module = Math.min(intersection.width, intersection.height);
+		final Vector2D newPos = new Coordinate.Polar(-module, theta)
+				.toVector2D();
+		this.move(newPos);
+
+	}
+
 	public void alignCloserBoundTo(final GameComponent<?> target) {
 		final Appearance ownBounds = this.getAppearance();
 		final Appearance targetBounds = target.getAppearance();
@@ -248,6 +264,10 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	public void changeRules(final IRule<?, ?>[] rules) {
 		this.rules = rules;
+	}
+
+	public void onAnimationEnd() {
+
 	}
 
 }
