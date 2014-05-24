@@ -56,7 +56,7 @@ public class CollisionCheckForGroupEventHandler implements
 		final GameComponent<?> component = (GameComponent<?>) this.target;
 		final ListFilter<GameComponent<?>> filter = ComponentUtils
 				.filter(component.getScene().getComponents())
-				.byClass(this.classFilter).removeOfType(this.excluded);
+				.byClass(this.classFilter).excludeOfType(this.excluded);
 
 		List<? extends GameComponent> targets = new ArrayList<GameComponent>();
 		if (this.same) {
@@ -67,10 +67,8 @@ public class CollisionCheckForGroupEventHandler implements
 		for (final GameComponent gameComponent : targets) {
 			if (component.isDestroyPending()) {
 				break;
-			}
-			if (!gameComponent.isDestroyPending()
-					&& this.collisionStrategy.isCollision(component,
-							gameComponent)) {
+			} else if (this.collisionStrategy.isCollision(component,
+					gameComponent)) {
 				ReflectionUtils.invoke(this.target, this.method, gameComponent);
 			}
 		}

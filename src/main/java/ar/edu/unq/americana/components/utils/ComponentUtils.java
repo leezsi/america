@@ -76,25 +76,17 @@ public class ComponentUtils {
 			return new ListFilter<T>(copy);
 		}
 
-		public ListFilter<T> removeOfType(final Class<?>... types) {
-			ListFilter<T> filter = this;
-			for (final Class<?> type : types) {
-				filter = this.removeOfType(type);
-			}
-			return filter;
-		}
-
-		private ListFilter<T> removeOfType(final Class<?> type) {
+		public ListFilter<T> excludeOfType(final Class<?>... types) {
 			final List<T> copy = new ArrayList<T>(this.list);
-			final List<T> ret = new ArrayList<T>();
-			for (final T component : copy) {
-				if (!type.isInstance(component)) {
-					ret.add(component);
+			for (final T component : this.list) {
+				for (final Class<?> type : types) {
+					if (type.isInstance(component)) {
+						copy.remove(component);
+					}
 				}
 			}
-			return new ListFilter<T>(ret);
+			return new ListFilter<T>(copy);
 		}
-
 	}
 
 	public static Method[] filterMethodsByAnnotation(final Class<?> clazz,

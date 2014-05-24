@@ -8,7 +8,7 @@ import ar.edu.unq.americana.utils.Vector2D;
 public abstract class Shape implements Appearance {
 
 	private GameComponent<?> component;
-	public Vector2D offset;
+	private Vector2D offset;
 
 	public void setComponent(final GameComponent<?> component) {
 		this.component = component;

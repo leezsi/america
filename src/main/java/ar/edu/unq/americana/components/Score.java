@@ -14,8 +14,6 @@ public class Score<SceneType extends GameScene> extends
 	private int score;
 	private final int deltaScore;
 	private final Label label;
-	private boolean firstX = true;
-	private boolean firstY = true;
 
 	public Score(final int deltaScore, final String font, final int fontSize,
 			final Color color) {
@@ -23,19 +21,17 @@ public class Score<SceneType extends GameScene> extends
 	}
 
 	@Override
+	public void onSceneActivated() {
+		super.setX(20);
+		super.setY(20);
+	}
+
+	@Override
 	public void setX(final double x) {
-		if (this.firstX) {
-			super.setX(x);
-			this.firstX = false;
-		}
 	}
 
 	@Override
 	public void setY(final double y) {
-		if (this.firstY) {
-			super.setY(y);
-			this.firstY = false;
-		}
 	}
 
 	@Override
@@ -50,7 +46,12 @@ public class Score<SceneType extends GameScene> extends
 		this.setZ(Integer.MAX_VALUE);
 		this.label = new Label(font, color, String.valueOf(this.score));
 		this.setAppearance(this.label);
-		this.updateXY();
+		this.initialize();
+	}
+
+	private void initialize() {
+		this.setX(10 + (this.label.getWidth() / 2));
+		this.setY((this.label.getHeight() / 2));
 	}
 
 	public void addPoint() {
@@ -60,8 +61,8 @@ public class Score<SceneType extends GameScene> extends
 	}
 
 	private void updateXY() {
-		this.setX(10 + (this.label.getWidth() / 2));
-		this.setY((this.label.getHeight() / 2));
+		super.setX(10 + (this.label.getWidth() / 2));
+		super.setY((this.label.getHeight() / 2));
 	}
 
 	public int getScore() {
