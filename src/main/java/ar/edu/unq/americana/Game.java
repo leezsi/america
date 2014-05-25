@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
+import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.utils.Tuning;
 
 public abstract class Game {
@@ -29,6 +30,7 @@ public abstract class Game {
 		this.preInitialize();
 		this.initializeResources();
 		this.setUpScenes();
+		EventManager.registry(this);
 	}
 
 	protected void initializeLocale() {

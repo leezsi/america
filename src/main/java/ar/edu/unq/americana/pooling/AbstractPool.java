@@ -40,6 +40,7 @@ public abstract class AbstractPool<T extends GameComponent<?>> {
 	}
 
 	public void add(final T object) {
+		object.setDestroyPending(true);
 		if (this.queue.size() < this.capacity) {
 			this.queue.add(object);
 		}
