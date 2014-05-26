@@ -56,10 +56,15 @@ public class TrigonometricsAndRandomUtils {
 		final double deltaX = from.getX() - to.getX();
 		final double theta = Math.atan2(deltaY, deltaX);
 		final double module = Math.hypot(deltaX, deltaY);
-		final Vector2D newPos = new Coordinate.Polar(-module, theta)
-				.toVector2D();
-		System.err.println(new Vector2D(from.getX(), from.getY()).toString()
-				+ newPos);
+		new Coordinate.Polar(-module, theta).toVector2D();
 
+	}
+
+	public static boolean nextBoolean() {
+		return rnd.nextBoolean();
+	}
+
+	public static double vectoreanBoolean() {
+		return nextBoolean() ? 1 : -1;
 	}
 }

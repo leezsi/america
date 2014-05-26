@@ -12,7 +12,8 @@ import ar.edu.unq.americana.events.ioc.Handler;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.utils.ReflectionUtils;
 
-public class CollisionCheckForTypeEventHandler implements Handler<CollisionCheckForTypeEvent> {
+public class CollisionCheckForTypeEventHandler implements
+		Handler<CollisionCheckForTypeEvent> {
 
 	private Object target;
 	private Method method;
@@ -22,7 +23,8 @@ public class CollisionCheckForTypeEventHandler implements Handler<CollisionCheck
 
 	@Override
 	public Handler<CollisionCheckForTypeEvent> copy() {
-		return new CollisionCheckForTypeEventHandler().fill(this.target, this.method);
+		return new CollisionCheckForTypeEventHandler().fill(this.target,
+				this.method);
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class CollisionCheckForTypeEventHandler implements Handler<CollisionCheck
 	public void executeOn(final DeltaState deltaState) {
 		final GameComponent<?> component = (GameComponent<?>) this.target;
 		final List<? extends GameComponent> targets = ComponentUtils
-				.filter(component.getScene().getComponents())
+				.filter(component.getScene().getCollisionableComponents())
 				.byClass(this.type).get();
 		for (final GameComponent gameComponent : targets) {
 			if (component.isDestroyPending()) {

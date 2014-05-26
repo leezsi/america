@@ -15,6 +15,7 @@ public class Label extends Shape {
 	private Font font;
 	private Color color;
 	private List<String> textLines;
+	private final FontMetrics metrics;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -32,6 +33,7 @@ public class Label extends Shape {
 	protected Label(final Font font, final Color color,
 			final List<String> textLines) {
 		this.setFont(font);
+		this.metrics = new Canvas().getFontMetrics(font);
 		this.setColor(color);
 		this.setTextLines(textLines);
 	}
@@ -43,10 +45,9 @@ public class Label extends Shape {
 	@Override
 	public double getWidth() {
 		double answer = 0;
-		final FontMetrics metrics = new Canvas().getFontMetrics(this.getFont());
 
 		for (final String line : this.getTextLines()) {
-			answer = Math.max(answer, metrics.stringWidth(line));
+			answer = Math.max(answer, this.metrics.stringWidth(line));
 		}
 
 		return answer;
@@ -54,7 +55,7 @@ public class Label extends Shape {
 
 	@Override
 	public double getHeight() {
-		return this.getLinesCount() * 1.05 * this.getLineHeight();
+		return this.getLinesCount() * this.metrics.getHeight();
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class Label extends Shape {
 	}
 
 	protected double getLineHeight() {
-		return this.getFont().getSize2D();
+		return this.metrics.getHeight();
 	}
 
 	// ****************************************************************

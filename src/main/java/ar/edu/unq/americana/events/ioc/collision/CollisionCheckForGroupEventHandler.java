@@ -55,7 +55,7 @@ public class CollisionCheckForGroupEventHandler implements
 	public void executeOn(final DeltaState deltaState) {
 		final GameComponent<?> component = (GameComponent<?>) this.target;
 		final ListFilter<GameComponent<?>> filter = ComponentUtils
-				.filter(component.getScene().getComponents())
+				.filter(component.getScene().getCollisionableComponents())
 				.byClass(this.classFilter).excludeOfType(this.excluded);
 
 		List<? extends GameComponent> targets = new ArrayList<GameComponent>();

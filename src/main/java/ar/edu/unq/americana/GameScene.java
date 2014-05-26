@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import ar.edu.unq.americana.components.Mouse;
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.EventQueue;
 import ar.edu.unq.americana.events.GameEvent;
@@ -21,7 +20,6 @@ public class GameScene {
 	private List<GameComponent<?>> components;
 	private EventQueue eventQueue;
 	private double lastUpdateTime;
-	private final Mouse<GameScene> mouse;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -31,15 +29,14 @@ public class GameScene {
 		EventManager.reset();
 		this.setComponents(new ArrayList<GameComponent<?>>());
 		EventManager.registry(this);
-		this.mouse = new Mouse<GameScene>();
-		this.addComponent(this.mouse);
+
 		this.setEventQueue(new EventQueue());
 		Configs.injectAndReadBeans(this);
 		Configs.injectConfigs(this.getClass());
 	}
 
-	public Mouse<GameScene> getMouse() {
-		return this.mouse;
+	public List<GameComponent<?>> getCollisionableComponents() {
+		return this.getComponents();
 	}
 
 	public GameScene(final GameComponent<? extends GameScene>... components) {
@@ -143,9 +140,11 @@ public class GameScene {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addComponent(final GameComponent component) {
-		this.getComponents().add(this.indexToInsert(component), component);
-		component.setScene(this);
-		EventManager.registry(component);
+		if (component != null) {
+			this.getComponents().add(this.indexToInsert(component), component);
+			component.setScene(this);
+			EventManager.registry(component);
+		}
 	}
 
 	public void addComponents(final GameComponent<?>... components) {
@@ -230,6 +229,14 @@ public class GameScene {
 			component.destroy();
 		}
 		this.setGame(null);
+	}
+
+	public void fullEventRegistry() {
+		EventManager.registry(this.getGame());
+		EventManager.registry(this);
+		for (final GameComponent<?> component : this.getComponents()) {
+			EventManager.registry(component);
+		}
 	}
 
 }

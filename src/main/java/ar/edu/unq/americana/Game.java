@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.events.ioc.EventManager;
+import ar.edu.unq.americana.scenes.pause.PauseGameScene;
 import ar.edu.unq.americana.utils.Tuning;
 
 public abstract class Game {
@@ -120,6 +121,20 @@ public abstract class Game {
 		this.currentScene = scene;
 		scene.setGame(this);
 		scene.onSetAsCurrent();
+	}
+
+	public void pause(final PauseGameScene scene) {
+		scene.setReturn(this.currentScene);
+		this.currentScene = scene;
+		scene.setGame(this);
+		scene.onSetAsCurrent();
+	}
+
+	public void resume(final GameScene scene) {
+		this.currentScene.destroy();
+		this.currentScene = scene;
+		scene.setGame(this);
+		scene.fullEventRegistry();
 	}
 
 	public void setLauncher(final DesktopGameLauncher launcher) {

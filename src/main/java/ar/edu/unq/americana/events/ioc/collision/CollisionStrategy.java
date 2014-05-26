@@ -4,10 +4,23 @@ import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.colissions.CollisionDetector;
 
 public enum CollisionStrategy {
-	PerfectPixel;
+	PerfectPixel {
+		@Override
+		public boolean isCollision(final GameComponent<?> component1,
+				final GameComponent<?> component2) {
+			return CollisionDetector.perfectPixel(component1, component2);
+		}
+	},
+	FromBounds {
 
-	public boolean isCollision(final GameComponent<?> component1,
-			final GameComponent<?> component2) {
-		return CollisionDetector.perfectPixel(component1, component2);
-	}
+		@Override
+		public boolean isCollision(final GameComponent<?> component1,
+				final GameComponent<?> component2) {
+			return CollisionDetector.fromBoxes(component1, component2);
+		}
+
+	};
+
+	public abstract boolean isCollision(final GameComponent<?> component1,
+			final GameComponent<?> component2);
 }
