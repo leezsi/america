@@ -1,22 +1,75 @@
 package ar.edu.unq.americana.ia.pathfindier;
 
-public interface Node {
+public class Node {
 
-	public boolean isAccessible();
+	private boolean accesible = true;
+	private boolean close = false;
+	private Node parent;
+	private final int heuristic;
+	private final int row;
+	private final int column;
 
-	public boolean isTarget();
+	public Node(final Node parent, final int row, final int column,
+			final int heuristic) {
+		this.parent = parent;
+		this.heuristic = heuristic;
+		this.row = row;
+		this.column = column;
+	}
 
-	public boolean isClose();
+	public Node(final int row, final int column, final int heuristic) {
+		this(null, row, column, heuristic);
+	}
 
-	public void setParent(Node node);
+	public boolean isAccessible() {
+		return this.accesible;
+	}
 
-	public int f();
+	public boolean isTarget() {
+		return this.heuristic == 0;
+	}
 
-	public void close();
+	public boolean isClose() {
+		return this.close;
+	}
 
-	public int row();
+	public void setParent(final Node node) {
+		this.parent = node;
+	}
 
-	public int column();
+	public int f() {
+		if (this.parent != null) {
+			return this.parent.f()
+					+ (((this.parent.row() == this.row) || (this.parent
+							.column() == this.column)) ? 10 : 14)
+					+ this.heuristic;
+		}
+		return this.heuristic;
+	}
 
-	public Node getParent();
+	public void close() {
+		this.close = true;
+	}
+
+	public int row() {
+		return this.row;
+	}
+
+	public int column() {
+		return this.column;
+	}
+
+	public Node getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public String toString() {
+		return "AStarNode [row=" + this.row + ", column=" + this.column
+				+ ", f()=" + this.f() + "]";
+	}
+
+	public void notAccesible() {
+		this.accesible = false;
+	}
 }
