@@ -27,8 +27,7 @@ public class AStarPathFinding implements PathFinding {
 				return new Path(current);
 			}
 			current.close();
-			final List<Node> adjacents = map.getAdjacents(current);
-			for (final Node tmp : adjacents) {
+			for (final Node tmp : map.getAdjacents(current)) {
 				this.addToOpens(current, tmp);
 			}
 		}

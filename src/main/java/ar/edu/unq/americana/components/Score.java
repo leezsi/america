@@ -7,6 +7,8 @@ import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.GameScene;
 import ar.edu.unq.americana.appearances.Label;
 import ar.edu.unq.americana.colissions.CollitionGroup;
+import ar.edu.unq.americana.scenes.camera.ICamera;
+import ar.edu.unq.americana.scenes.camera.StaticCamera;
 
 public class Score<SceneType extends GameScene> extends
 		GameComponent<SceneType> {
@@ -67,5 +69,10 @@ public class Score<SceneType extends GameScene> extends
 
 	public int getScore() {
 		return this.score;
+	}
+
+	@Override
+	public ICamera getCamera() {
+		return new StaticCamera();
 	}
 }

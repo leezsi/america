@@ -5,6 +5,8 @@ import ar.edu.unq.americana.GameScene;
 import ar.edu.unq.americana.appearances.Sprite;
 import ar.edu.unq.americana.events.annotations.Events.Update;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
+import ar.edu.unq.americana.scenes.camera.ICamera;
+import ar.edu.unq.americana.scenes.camera.StaticCamera;
 
 public class LifeCounter<SceneType extends GameScene> extends
 		GameComponent<SceneType> {
@@ -57,5 +59,10 @@ public class LifeCounter<SceneType extends GameScene> extends
 
 	public boolean isDead() {
 		return this.lives == 0;
+	}
+
+	@Override
+	public ICamera getCamera() {
+		return new StaticCamera();
 	}
 }

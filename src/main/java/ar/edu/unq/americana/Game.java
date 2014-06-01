@@ -6,12 +6,14 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 
+import ar.edu.unq.americana.configs.Bean;
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.scenes.pause.PauseGameScene;
 import ar.edu.unq.americana.utils.Tuning;
 
+@Bean
 public abstract class Game {
 
 	private GameScene currentScene;
@@ -23,11 +25,11 @@ public abstract class Game {
 	// ****************************************************************
 
 	public Game() {
+		Configs.injectAndReadBeans(this);
+		this.loadProperties();
+		Configs.injectConfigs(this);
 		this.initializeLocale();
 		this.setCurrentScene(new GameScene());
-		this.loadProperties();
-		Configs.injectAndReadBeans(this);
-		Configs.injectConfigs(this.getClass());
 		this.preInitialize();
 		this.initializeResources();
 		this.setUpScenes();

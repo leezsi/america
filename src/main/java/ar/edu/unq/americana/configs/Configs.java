@@ -1,10 +1,14 @@
 package ar.edu.unq.americana.configs;
 
 import java.awt.Color;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ar.edu.unq.americana.appearances.Sprite;
 import ar.edu.unq.americana.exceptions.GameException;
@@ -13,13 +17,43 @@ import ar.edu.unq.americana.utils.Tuning;
 
 public class Configs {
 
-	private static Map<Class<?>, Object> beans = new HashMap<Class<?>, Object>();
+	private static Map<String, Object> beans = new HashMap<String, Object>();
+	private static Set<WeakReference<Object>> references = new HashSet<WeakReference<Object>>();
 
 	private static void readBeans(final Object object) {
-		final Class<?> clazz = object.getClass();
-		if (clazz.getAnnotation(Bean.class) != null) {
-			beans.put(clazz, object);
+		readBeans(object, object.getClass());
+	}
+
+	private static void readBeans(final Object object, final Class<?> clazz) {
+		if (clazz != null) {
+			Class<?>[] all = clazz.getInterfaces();
+			all = Arrays.copyOf(all, all.length + 1);
+			all[all.length - 1] = clazz;
+			for (final Class<?> target : all) {
+				if (target.isAnnotationPresent(Bean.class)) {
+					final Bean annotation = target.getAnnotation(Bean.class);
+					beans.put(
+							annotation.name().equals("") ? target
+									.getCanonicalName() : annotation.name(),
+							object);
+					refreshAndAddNewBeans();
+				}
+			}
+			readBeans(object, clazz.getSuperclass());
 		}
+
+	}
+
+	private static void refreshAndAddNewBeans() {
+		final Set<WeakReference<Object>> tmp = new HashSet<WeakReference<Object>>();
+		for (final WeakReference<Object> currentReference : references) {
+			if (currentReference.get() != null) {
+				tmp.add(currentReference);
+				injectBeans(currentReference.get());
+			}
+		}
+
+		references = tmp;
 	}
 
 	private static void injectBeans(final Object object) {
@@ -27,7 +61,14 @@ public class Configs {
 		final List<Field> fields = ReflectionUtils.getAnnotatedFields(clazz,
 				Bean.class);
 		for (final Field field : fields) {
-			ReflectionUtils.set(object, field, beans.get(field.getType()));
+			final Bean annotation = field.getAnnotation(Bean.class);
+			Object toSet;
+			if (annotation.name().equals("")) {
+				toSet = beans.get(field.getType().getCanonicalName());
+			} else {
+				toSet = beans.get(annotation.name());
+			}
+			ReflectionUtils.set(object, field, toSet);
 		}
 	}
 
@@ -69,5 +110,9 @@ public class Configs {
 		} else {
 			return null;
 		}
+	}
+
+	public static void injectConfigs(final Object object) {
+		injectConfigs(object.getClass());
 	}
 }

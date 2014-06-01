@@ -13,6 +13,8 @@ import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForGroupEvent;
 import ar.edu.unq.americana.events.ioc.collision.CollisionCheckForTypeEvent;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
+import ar.edu.unq.americana.scenes.camera.ICamera;
+import ar.edu.unq.americana.scenes.camera.StaticCamera;
 
 public class GameScene {
 
@@ -20,6 +22,7 @@ public class GameScene {
 	private List<GameComponent<?>> components;
 	private EventQueue eventQueue;
 	private double lastUpdateTime;
+	private ICamera camera = new StaticCamera();
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -231,12 +234,28 @@ public class GameScene {
 		this.setGame(null);
 	}
 
+	public ICamera getCamera() {
+		return this.camera;
+	}
+
+	public void setCamera(final ICamera camera) {
+		this.camera = camera;
+	}
+
 	public void fullEventRegistry() {
 		EventManager.registry(this.getGame());
 		EventManager.registry(this);
 		for (final GameComponent<?> component : this.getComponents()) {
 			EventManager.registry(component);
 		}
+	}
+
+	public double getWidth() {
+		return this.getGame().getDisplayWidth();
+	}
+
+	public double getHeight() {
+		return this.getGame().getDisplayHeight();
 	}
 
 }

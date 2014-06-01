@@ -3,12 +3,18 @@ package ar.edu.unq.americana.appearances;
 import java.awt.Rectangle;
 
 import ar.edu.unq.americana.GameComponent;
+import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.utils.Vector2D;
 
 public abstract class Shape implements Appearance {
 
 	private GameComponent<?> component;
 	private Vector2D offset;
+
+	public Shape() {
+		Configs.injectAndReadBeans(this);
+		Configs.injectConfigs(this.getClass());
+	}
 
 	public void setComponent(final GameComponent<?> component) {
 		this.component = component;
@@ -28,12 +34,14 @@ public abstract class Shape implements Appearance {
 
 	@Override
 	public double getX() {
-		return this.componentVector().suma(this.offset).getX();
+		final double x = this.componentVector().suma(this.offset).getX();
+		return this.getComponent().getCamera().adjustX(x);
 	}
 
 	@Override
 	public double getY() {
-		return this.componentVector().suma(this.offset).getY();
+		final double y = this.componentVector().suma(this.offset).getY();
+		return this.getComponent().getCamera().adjustY(y);
 	}
 
 	protected GameComponent<?> getComponent() {

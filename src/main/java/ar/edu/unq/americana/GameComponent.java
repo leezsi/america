@@ -14,6 +14,7 @@ import ar.edu.unq.americana.events.ioc.EventManager;
 import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.math.Coordinate;
 import ar.edu.unq.americana.rules.IRule;
+import ar.edu.unq.americana.scenes.camera.ICamera;
 import ar.edu.unq.americana.utils.Vector2D;
 
 public abstract class GameComponent<SceneType extends GameScene> {
@@ -268,6 +269,10 @@ public abstract class GameComponent<SceneType extends GameScene> {
 
 	public void onAnimationEnd() {
 
+	}
+
+	public ICamera getCamera() {
+		return this.getScene().getCamera();
 	}
 
 }

@@ -26,10 +26,6 @@ public class DefaultScene extends GameScene {
 		this.collisionableComponents = new ArrayList<GameComponent<?>>();
 	}
 
-	public Mouse<GameScene> getMouse() {
-		return this.mouse;
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void addComponent(final GameComponent component) {
@@ -56,4 +52,7 @@ public class DefaultScene extends GameScene {
 		return this.score;
 	}
 
+	public Mouse<GameScene> getMouse() {
+		return this.mouse;
+	}
 }
