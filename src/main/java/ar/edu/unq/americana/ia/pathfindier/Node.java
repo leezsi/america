@@ -65,8 +65,8 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "AStarNode [row=" + this.row + ", column=" + this.column
-				+ ", f()=" + this.f() + "]";
+		return "Node [row=" + this.row + ", column=" + this.column + ", f()="
+				+ this.f() + "]";
 	}
 
 	public void notAccesible() {

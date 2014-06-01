@@ -19,19 +19,22 @@ public class Camera implements ICamera {
 
 	@Events.Fired(CameraUpdateEvent.class)
 	private void update(final CameraUpdateEvent event) {
-		this.deltaX += event.getDx();
 		final int displayWidth = this.game.getDisplayWidth();
+		final int displayHeight = this.game.getDisplayHeight();
+
+		this.deltaX += event.getDx();
+		this.deltaY += event.getDy();
+
 		final boolean lx = this.deltaX >= (displayWidth / 2);
 		final boolean rx = this.deltaX <= (this.game.getCurrentScene()
 				.getWidth() - (this.game.getDisplayWidth() / 2));
-		if (lx && rx) {
-			this.currentX += event.getDx();
-		}
-		this.deltaY += event.getDy();
-		int displayHeight = this.game.getDisplayHeight();
 		final boolean ty = this.deltaY >= (displayHeight / 2);
 		final boolean by = this.deltaY <= (this.game.getCurrentScene()
 				.getHeight() - (displayHeight / 2));
+
+		if (lx && rx) {
+			this.currentX += event.getDx();
+		}
 		if (ty && by) {
 			this.currentY += event.getDy();
 		}

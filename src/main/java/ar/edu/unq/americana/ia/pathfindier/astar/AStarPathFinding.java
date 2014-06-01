@@ -1,6 +1,5 @@
 package ar.edu.unq.americana.ia.pathfindier.astar;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +7,18 @@ import ar.edu.unq.americana.ia.pathfindier.Node;
 import ar.edu.unq.americana.ia.pathfindier.Path;
 import ar.edu.unq.americana.ia.pathfindier.PathFinding;
 import ar.edu.unq.americana.ia.pathfindier.TileMap;
+import ar.edu.unq.americana.scenes.components.tilemap.Positionable;
 
 public class AStarPathFinding implements PathFinding {
 
 	private final List<Node> opens = new ArrayList<Node>();
 
 	@Override
-	public Path find(final TileMap map, final Point initial, final Point target) {
+	public Path find(final TileMap map, final Positionable initial,
+			final Positionable target) {
 		map.changeTarget(target);
-		return this.doFind(map, map.getNode(initial.y, initial.x));
+		return this.doFind(map,
+				map.getNode(initial.getRow(), initial.getColumn()));
 	}
 
 	private Path doFind(final TileMap map, final Node node) {
@@ -24,7 +26,7 @@ public class AStarPathFinding implements PathFinding {
 		while (!this.opens.isEmpty()) {
 			final Node current = this.poll();
 			if (current.isTarget()) {
-				return new Path(current);
+				return Path.makePath(current);
 			}
 			current.close();
 			for (final Node tmp : map.getAdjacents(current)) {

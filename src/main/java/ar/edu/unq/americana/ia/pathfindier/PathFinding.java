@@ -1,9 +1,9 @@
 package ar.edu.unq.americana.ia.pathfindier;
 
-import java.awt.Point;
+import ar.edu.unq.americana.scenes.components.tilemap.Positionable;
 
 public interface PathFinding {
 
-	public Path find(TileMap map, Point initial, Point target);
+	public Path find(TileMap map, Positionable initial, Positionable target);
 
 }
