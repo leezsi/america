@@ -4,6 +4,7 @@ import java.util.Random;
 
 import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.math.Coordinate;
+import ar.edu.unq.americana.scenes.components.tilemap.Positionable;
 
 public class TrigonometricsAndRandomUtils {
 
@@ -66,5 +67,10 @@ public class TrigonometricsAndRandomUtils {
 
 	public static double vectoreanBoolean() {
 		return nextBoolean() ? 1 : -1;
+	}
+
+	public static int manhattan(final Positionable from, final Positionable to) {
+		return Math.abs(from.getRow() - to.getRow())
+				+ Math.abs(from.getColumn() - to.getColumn());
 	}
 }
