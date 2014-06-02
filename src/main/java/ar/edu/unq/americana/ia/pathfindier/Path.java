@@ -49,8 +49,6 @@ public class Path {
 	public void takeStep(final double delta, final Positionable component) {
 		final int dr = this.deltaRow(component);
 		final int dc = this.deltaColumn(component);
-		System.err.println(component.getColumn() + " " + this.node.column()
-				+ this);
 		((GameComponent<?>) component).move(dc * delta, dr * delta);
 	}
 }
