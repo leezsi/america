@@ -100,9 +100,14 @@ public class GameScene {
 	// ****************************************************************
 
 	public void onSetAsCurrent() {
+		this.addGameComponents();
 		for (final GameComponent<?> component : this.components) {
 			component.onSceneActivated();
 		}
+	}
+
+	protected void addGameComponents() {
+
 	}
 
 	public void pushEvent(final GameEvent event) {
@@ -183,8 +188,17 @@ public class GameScene {
 	}
 
 	public void center(final GameComponent<?> component) {
-		component.setX(this.getGame().getDisplayWidth() / 2);
+		this.centerHorizontally(component);
+		this.centerVertically(component);
+	}
+
+	public void centerVertically(final GameComponent<?> component) {
 		component.setY(this.getGame().getDisplayHeight() / 2);
+	}
+
+	public void centerHorizontally(final GameComponent<?> component) {
+		component.setX(this.getGame().getDisplayWidth() / 2);
+
 	}
 
 	protected void fire(final FiredEvent event) {
