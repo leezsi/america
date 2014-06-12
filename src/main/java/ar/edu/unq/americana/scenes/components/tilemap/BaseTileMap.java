@@ -11,9 +11,13 @@ public class BaseTileMap implements TileMap {
 	private final ITileMapScene scene;
 	private Positionable target;
 
-	public BaseTileMap(final ITileMapScene scene) {
+	public BaseTileMap(final ITileMapScene scene, final int tileWidth,
+			final int tileHeight,
+			final ITileMapResourceProvider tileMapResourceProvider) {
 		this.nodes = new Node[scene.rowsCount()][scene.columnsCount()];
 		this.scene = scene;
+		scene.addTileBackground(new TileMapBackground(tileWidth, tileHeight,
+				tileMapResourceProvider));
 	}
 
 	private void generateNodes(final int rows, final int columns) {

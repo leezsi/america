@@ -7,6 +7,8 @@ import ar.edu.unq.americana.GameComponent;
 import ar.edu.unq.americana.GameScene;
 import ar.edu.unq.americana.appearances.Label;
 import ar.edu.unq.americana.colissions.CollitionGroup;
+import ar.edu.unq.americana.components.events.ScoreUpEvent;
+import ar.edu.unq.americana.events.annotations.Events.Fired;
 import ar.edu.unq.americana.scenes.camera.ICamera;
 import ar.edu.unq.americana.scenes.camera.StaticCamera;
 
@@ -29,14 +31,6 @@ public class Score<SceneType extends GameScene> extends
 	}
 
 	@Override
-	public void setX(final double x) {
-	}
-
-	@Override
-	public void setY(final double y) {
-	}
-
-	@Override
 	protected boolean isCollisionable() {
 		return false;
 	}
@@ -56,7 +50,8 @@ public class Score<SceneType extends GameScene> extends
 		this.setY((this.label.getHeight() / 2));
 	}
 
-	public void addPoint() {
+	@Fired(ScoreUpEvent.class)
+	public void addPoint(final ScoreUpEvent event) {
 		this.score += this.deltaScore;
 		this.label.setText(String.valueOf(this.score));
 		this.updateXY();

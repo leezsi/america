@@ -17,4 +17,6 @@ public interface ITileMapScene {
 
 	TileMap getTileMap();
 
+	void addTileBackground(TileMapBackground tileMapBackGround);
+
 }

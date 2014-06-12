@@ -28,17 +28,9 @@ public class LifeCounter<SceneType extends GameScene> extends
 
 	@Override
 	public void onSceneActivated() {
-		super.setX(this.getGame().getDisplayWidth()
+		this.setX(this.getGame().getDisplayWidth()
 				- (this.sprite.getWidth() / 2) - 10);
-		super.setY((this.sprite.getHeight() / 2) + 10);
-	}
-
-	@Override
-	public void setY(final double y) {
-	}
-
-	@Override
-	public void setX(final double x) {
+		this.setY((this.sprite.getHeight() / 2) + 10);
 	}
 
 	@Update
