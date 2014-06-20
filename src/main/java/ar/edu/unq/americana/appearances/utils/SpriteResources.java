@@ -118,8 +118,10 @@ public class SpriteResources {
 				final SpriteResources bounds = sprite.bounds;
 				final int x = (int) bounds.x.doubleValue();
 				final int y = (int) bounds.y.doubleValue();
-				final int width = (int) bounds.width.doubleValue();
-				final int height = (int) bounds.height.doubleValue();
+				final int width = (int) (bounds.width == null ? base.getWidth()
+						: bounds.width.doubleValue());
+				final int height = (int) (bounds.height == null ? base
+						.getHeight() : bounds.height.doubleValue());
 				Sprite crop = base.crop(x, y, width, height);
 				if (sprite.width != null) {
 					crop = crop.scaleHorizontally(sprite.width

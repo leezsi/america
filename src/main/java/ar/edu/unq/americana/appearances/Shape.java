@@ -18,7 +18,12 @@ public abstract class Shape implements Appearance {
 
 	public void setComponent(final GameComponent<?> component) {
 		this.component = component;
+		this.refreshOffset();
+	}
+
+	protected void refreshOffset() {
 		this.changeOffset(-1, this.getWidth() / 2, -1, this.getHeight() / 2);
+
 	}
 
 	private Vector2D componentVector() {

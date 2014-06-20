@@ -28,8 +28,8 @@ public class Sprite extends SimpleAppearance<Sprite> implements IImageGet {
 	public static Sprite fromImage(final String imageFileName,
 			final ResourceProvider provider) {
 		BufferedImage image;
-
 		try {
+
 			image = ImageIO.read(provider.getResource(imageFileName));
 		} catch (final Exception e) {
 			throw new GameException("The resource '" + imageFileName

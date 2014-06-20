@@ -147,4 +147,8 @@ public abstract class Game {
 		return this.launcher;
 	}
 
+	public void startGame() {
+
+	}
+
 }

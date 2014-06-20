@@ -12,10 +12,9 @@ public final class Background<SceneType extends GameScene> extends
 
 	@Override
 	public void onSceneActivated() {
-		// TODO Auto-generated method stub
 		this.setX(this.getGame().getDisplayWidth() / 2);
 		this.setY(this.getGame().getDisplayHeight() / 2);
-		this.setZ(0);
+		this.setZ(Integer.MIN_VALUE);
 	}
 
 }
