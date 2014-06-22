@@ -1,4 +1,4 @@
-package ar.edu.unq.americana.scenes.pause;
+package ar.edu.unq.americana.scenes.menu;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -14,22 +14,22 @@ import ar.edu.unq.americana.events.ioc.fired.FiredEvent;
 import ar.edu.unq.americana.game.events.GameResumeEvent;
 import ar.edu.unq.americana.scenes.normal.DefaultScene;
 
-public abstract class PauseGameScene extends DefaultScene {
+public abstract class MenuGameScene extends DefaultScene {
 
 	protected class MenuBuilder {
 
-		private final PauseGameScene scene;
+		private final MenuGameScene scene;
 		private final List<Button<?>> buttons;
 		private final double deltaY = 10;
 
-		public MenuBuilder(final PauseGameScene scene) {
+		public MenuBuilder(final MenuGameScene scene) {
 			this.scene = scene;
 			this.buttons = new ArrayList<Button<?>>();
 		}
 
 		public void button(final String textKey, final FiredEvent event) {
 			this.buttons.add(new Button<DefaultScene>(textKey,
-					PauseGameScene.this.font(), event));
+					MenuGameScene.this.font(), event));
 		}
 
 		public void addButtons() {
@@ -38,7 +38,7 @@ public abstract class PauseGameScene extends DefaultScene {
 				this.scene.addComponent(button);
 				button.onSceneActivated();
 				final double height = button.getAppearance().getHeight();
-				button.setX(PauseGameScene.this.getGame().getDisplayWidth() / 2);
+				button.setX(MenuGameScene.this.getGame().getDisplayWidth() / 2);
 				y += height + this.deltaY;
 				button.setY(y);
 			}
@@ -49,7 +49,7 @@ public abstract class PauseGameScene extends DefaultScene {
 	private GameScene currentScene;
 	private final MenuBuilder menuBuilder;
 
-	public PauseGameScene() {
+	public MenuGameScene() {
 		super(null, null);
 		this.getMouse().setAppearance(this.mouseSprite());
 		this.addComponent(this.logo());
@@ -72,18 +72,18 @@ public abstract class PauseGameScene extends DefaultScene {
 		this.menuBuilder.addButtons();
 	}
 
-	private GameComponent<PauseGameScene> logo() {
-		return new GameComponent<PauseGameScene>() {
+	private GameComponent<MenuGameScene> logo() {
+		return new GameComponent<MenuGameScene>() {
 			private Sprite sprite;
 			{
-				this.sprite = Sprite.fromImage(PauseGameScene.this
+				this.sprite = Sprite.fromImage(MenuGameScene.this
 						.logoResourcePath());
 
 			}
 
 			@Override
 			public void onSceneActivated() {
-				final PauseGameScene scene = this.getScene();
+				final MenuGameScene scene = this.getScene();
 				final Game game = scene.getGame();
 				final int width = game.getDisplayWidth();
 				this.setX(width / 2);
@@ -102,7 +102,7 @@ public abstract class PauseGameScene extends DefaultScene {
 	}
 
 	@Events.Fired(GameResumeEvent.class)
-	private void resume(final GameResumeEvent event) {
+	protected void resume(final GameResumeEvent event) {
 		this.getGame().resume(this.currentScene);
 	}
 

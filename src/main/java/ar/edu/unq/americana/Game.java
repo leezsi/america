@@ -10,7 +10,7 @@ import ar.edu.unq.americana.configs.Bean;
 import ar.edu.unq.americana.configs.Configs;
 import ar.edu.unq.americana.events.GameEvent;
 import ar.edu.unq.americana.events.ioc.EventManager;
-import ar.edu.unq.americana.scenes.pause.PauseGameScene;
+import ar.edu.unq.americana.scenes.menu.MenuGameScene;
 import ar.edu.unq.americana.utils.Tuning;
 
 @Bean
@@ -125,7 +125,7 @@ public abstract class Game {
 		scene.onSetAsCurrent();
 	}
 
-	public void pause(final PauseGameScene scene) {
+	public void pause(final MenuGameScene scene) {
 		scene.setReturn(this.currentScene);
 		this.currentScene = scene;
 		scene.setGame(this);

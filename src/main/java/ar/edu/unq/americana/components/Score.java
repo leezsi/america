@@ -67,6 +67,11 @@ public class Score<SceneType extends GameScene> extends
 	}
 
 	@Override
+	public boolean isDestroyPending() {
+		return false;
+	}
+
+	@Override
 	public ICamera getCamera() {
 		return new StaticCamera();
 	}

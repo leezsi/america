@@ -1,5 +1,6 @@
 package ar.edu.unq.americana.utils;
 
+import java.util.List;
 import java.util.Random;
 
 import ar.edu.unq.americana.GameComponent;
@@ -14,7 +15,7 @@ public class TrigonometricsAndRandomUtils {
 	}
 
 	public static int uniform(final int min, final int max) {
-		return min + (rnd.nextInt() * (max - min));
+		return min + rnd.nextInt(max - min);
 	}
 
 	public static double uniform(final double min, final double max) {
@@ -72,5 +73,21 @@ public class TrigonometricsAndRandomUtils {
 	public static int manhattan(final Positionable from, final Positionable to) {
 		return Math.abs(from.getRow() - to.getRow())
 				+ Math.abs(from.getColumn() - to.getColumn());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T oneOf(final List<T> options) {
+		return (T) oneOf(options.toArray());
+	}
+
+	public static <T> T oneOf(final T[] options) {
+		final int size = options.length;
+		if (size > 1) {
+			return options[uniform(0, size - 1)];
+		} else if (size == 1) {
+			return options[0];
+		} else {
+			return null;
+		}
 	}
 }
