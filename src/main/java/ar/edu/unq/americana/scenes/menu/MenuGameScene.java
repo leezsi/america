@@ -53,8 +53,13 @@ public abstract class MenuGameScene extends DefaultScene {
 		super(null, null);
 		this.getMouse().setAppearance(this.mouseSprite());
 		this.addComponent(this.logo());
+		this.addExtras();
 		this.menuBuilder = new MenuBuilder(this);
 		this.addButtons(this.menuBuilder);
+	}
+
+	protected void addExtras() {
+
 	}
 
 	private Sprite mouseSprite() {

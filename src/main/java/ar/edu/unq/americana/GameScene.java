@@ -259,6 +259,7 @@ public class GameScene {
 	public void fullEventRegistry() {
 		EventManager.registry(this.getGame());
 		EventManager.registry(this);
+		EventManager.registry(this.camera);
 		for (final GameComponent<?> component : this.getComponents()) {
 			EventManager.registry(component);
 		}
@@ -268,8 +269,23 @@ public class GameScene {
 		return this.getGame().getDisplayWidth();
 	}
 
+	public double getLeft() {
+		return 0;
+	}
+
+	public double getTop() {
+		return 0;
+	}
+
 	public double getHeight() {
 		return this.getGame().getDisplayHeight();
 	}
 
+	public double getRight() {
+		return this.getWidth();
+	}
+
+	public double getBottom() {
+		return this.getHeight();
+	}
 }
