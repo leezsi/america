@@ -8,7 +8,7 @@ import ar.edu.unq.americana.scenes.components.tilemap.Positionable;
 @Bean
 public interface TileMap {
 
-	void changeTarget(Positionable target);
+	boolean changeTarget(Positionable target);
 
 	Node getNode(int row, int column);
 

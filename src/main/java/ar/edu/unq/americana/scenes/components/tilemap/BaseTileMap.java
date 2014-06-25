@@ -35,9 +35,14 @@ public class BaseTileMap implements TileMap {
 	}
 
 	@Override
-	public void changeTarget(final Positionable target) {
+	public boolean changeTarget(final Positionable target) {
 		this.target = target;
-		this.generateNodes(this.scene.rowsCount(), this.scene.columnsCount());
+		if (this.scene.isAccessible(target.getRow(), target.getColumn())) {
+			this.generateNodes(this.scene.rowsCount(),
+					this.scene.columnsCount());
+			return true;
+		}
+		return false;
 	}
 
 	@Override

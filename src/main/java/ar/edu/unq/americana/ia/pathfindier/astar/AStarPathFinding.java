@@ -16,9 +16,11 @@ public class AStarPathFinding implements PathFinding {
 	@Override
 	public Path find(final TileMap map, final Positionable initial,
 			final Positionable target) {
-		map.changeTarget(target);
-		return this.doFind(map,
-				map.getNode(initial.getRow(), initial.getColumn()));
+		if (map.changeTarget(target)) {
+			return this.doFind(map,
+					map.getNode(initial.getRow(), initial.getColumn()));
+		}
+		return null;
 	}
 
 	private Path doFind(final TileMap map, final Node node) {
