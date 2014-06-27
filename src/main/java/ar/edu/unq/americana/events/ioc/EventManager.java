@@ -17,6 +17,7 @@ import ar.edu.unq.americana.events.ioc.fired.FiredEventHandler;
 import ar.edu.unq.americana.events.ioc.keyboard.KeyboardHandler;
 import ar.edu.unq.americana.events.ioc.mouse.MouseHandler;
 import ar.edu.unq.americana.events.ioc.mouse.MouseMoveEventHandler;
+import ar.edu.unq.americana.events.ioc.timer.TimerEventHandler;
 import ar.edu.unq.americana.events.ioc.update.UpdateHandler;
 import ar.edu.unq.americana.utils.ReflectionUtils;
 
@@ -35,6 +36,7 @@ public class EventManager {
 				new CollisionCheckForTypeEventHandler());
 		annotationMap.put(Events.ColitionCheck.ForGroup.class,
 				new CollisionCheckForGroupEventHandler());
+		annotationMap.put(Events.Timer.class, new TimerEventHandler());
 	}
 
 	private static Map<Class<?>, List<Handler<?>>> handlers = new HashMap<Class<?>, List<Handler<?>>>();

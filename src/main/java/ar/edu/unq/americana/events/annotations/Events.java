@@ -78,4 +78,10 @@ public @interface Events {
 
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(value = { ElementType.METHOD })
+	public @interface Timer {
+
+	}
+
 }
