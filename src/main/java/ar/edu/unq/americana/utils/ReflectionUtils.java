@@ -62,7 +62,7 @@ public class ReflectionUtils {
 			method.invoke(target, params);
 		} catch (final Exception e) {
 			System.err.println(method.getName()
-					+ Arrays.toString(method.getParameters()) + "  :  "
+					 + "  :  "
 					+ Arrays.toString(params));
 			throw new GameException(e);
 		}
