@@ -8,23 +8,25 @@ import ar.edu.unq.americana.exceptions.GameException;
 
 public class Timer extends GameComponent<GameScene> implements Runnable {
 
-	private Thread thread;
-	private long time;
+	private final Thread thread;
+	private final long time;
+
+	public Timer(final long time) {
+		this.thread = new Thread(this);
+		this.time = time;
+		this.thread.start();
+	}
 
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(this.time);
-			EventManager.fire(new TimerEvent(), null);
+			while (true) {
+				Thread.sleep(this.time);
+				EventManager.fire(new TimerEvent(), null);
+			}
 		} catch (final InterruptedException e) {
 			throw new GameException(e);
 		}
-	}
-
-	public void setInterval(final double time) {
-		this.thread = new Thread(this);
-		this.time = (long) time;
-		this.thread.start();
 	}
 
 }
